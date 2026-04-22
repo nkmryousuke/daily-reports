@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デイリー投資レポート — 2026年4月20日</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', sans-serif;
+      background: #f4f5f7;
+      color: #1e2a3a;
+      line-height: 1.72;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 252px;
+      flex-shrink: 0;
+      background: #ffffff;
+      border-right: 1px solid #dde1e7;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+    .sidebar-logo { padding: 22px 20px 16px; border-bottom: 1px solid #eef0f4; }
+    .sidebar-logo .logo-tag { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #2563eb; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-logo h1 { font-size: 14px; font-weight: 800; color: #0f172a; }
+    .sidebar-logo .logo-date { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    .sidebar-nav { padding: 14px 12px 10px; border-bottom: 1px solid #eef0f4; }
+    .sidebar-nav .nav-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #94a3b8; font-weight: 700; padding: 0 8px; margin-bottom: 6px; }
+    .sidebar-nav a { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 7px; color: #374151; text-decoration: none; font-size: 12.5px; font-weight: 500; transition: background 0.15s, color 0.15s; }
+    .sidebar-nav a:hover { background: #f1f5f9; color: #1d4ed8; }
+    .sidebar-nav a.active { background: #eff6ff; color: #1d4ed8; font-weight: 700; }
+    .nav-badge { margin-left: auto; font-size: 9px; background: #dbeafe; color: #1d4ed8; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
+    .nav-badge.up { background: #dcfce7; color: #15803d; }
+    .nav-badge.down { background: #fee2e2; color: #b91c1c; }
+    .nav-badge.mat { background: #fef9c3; color: #92400e; }
+    .nav-badge.inv { background: #ede9fe; color: #5b21b6; }
+
+    .sidebar-calendar { padding: 16px 14px; flex: 1; }
+    .cal-header-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 10px; }
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .cal-nav button { background: none; border: 1px solid #dde1e7; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; color: #64748b; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: background 0.12s; }
+    .cal-nav button:hover { background: #f1f5f9; }
+    .cal-month-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-dow { font-size: 10px; text-align: center; color: #94a3b8; font-weight: 600; padding: 3px 0 5px; }
+    .cal-dow:first-child { color: #ef4444; }
+    .cal-dow:last-child { color: #3b82f6; }
+    .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 11.5px; border-radius: 6px; cursor: default; color: #94a3b8; font-weight: 500; transition: background 0.12s; }
+    .cal-day.in-month { color: #374151; }
+    .cal-day.has-report { color: #1d4ed8; font-weight: 700; cursor: pointer; background: #eff6ff; }
+    .cal-day.has-report:hover { background: #dbeafe; }
+    .cal-day.today { background: #1d4ed8; color: #fff !important; font-weight: 800; cursor: pointer; }
+    .cal-day.today:hover { background: #1e40af; }
+    .cal-day.sun.in-month:not(.has-report):not(.today) { color: #fca5a5; }
+    .cal-day.sat.in-month:not(.has-report):not(.today) { color: #93c5fd; }
+
+    /* ── Main ── */
+    #main { margin-left: 252px; flex: 1; padding: 0 0 80px; }
+
+    .top-bar { background: #ffffff; border-bottom: 1px solid #dde1e7; padding: 18px 36px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 50; }
+    .top-bar .tb-title { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .top-bar .tb-date { font-size: 12px; color: #64748b; background: #f1f5f9; padding: 3px 10px; border-radius: 99px; }
+    .top-bar .tb-market { margin-left: auto; display: flex; gap: 24px; align-items: center; }
+    .tb-mitem { display: flex; flex-direction: column; align-items: flex-end; }
+    .tb-mitem .tl { font-size: 9px; color: #94a3b8; letter-spacing: 0.06em; }
+    .tb-mitem .tv { font-size: 13px; font-weight: 700; color: #0f172a; }
+    .tb-mitem .tc-up { font-size: 11px; color: #16a34a; font-weight: 600; }
+    .tb-mitem .tc-down { font-size: 11px; color: #dc2626; font-weight: 600; }
+
+    .content { padding: 28px 36px; }
+
+    .section { margin-bottom: 44px; }
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid #e8eaed; }
+    .sec-title { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .sec-sub { font-size: 11.5px; color: #94a3b8; margin-left: 4px; }
+
+    /* ── News Cards ── */
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+    .news-card { background: #ffffff; border: 1px solid #dde1e7; border-radius: 12px; padding: 20px 22px; transition: box-shadow 0.18s, border-color 0.18s; }
+    .news-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); border-color: #c7d2e8; }
+    .nc-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; margin-bottom: 10px; }
+    .tag-geo { background: #fce7f3; color: #9d174d; }
+    .tag-macro { background: #fef3c7; color: #92400e; }
+    .tag-ma { background: #ede9fe; color: #5b21b6; }
+    .tag-semi { background: #e0f2fe; color: #075985; }
+    .tag-dom { background: #f0fdf4; color: #166534; }
+    .tag-us { background: #fff7ed; color: #9a3412; }
+    .tag-hotel { background: #fdf4ff; color: #7e22ce; }
+    .tag-robot { background: #ecfdf5; color: #065f46; }
+    .tag-plant { background: #f0f9ff; color: #0c4a6e; }
+    .tag-reorg { background: #faf5ff; color: #6b21a8; }
+    .tag-market { background: #dcfce7; color: #166534; }
+    .tag-x { background: #e0e7ff; color: #3730a3; }
+    .tag-theme { background: #cffafe; color: #155e75; }
+    .news-card h3 { font-size: 13.5px; font-weight: 700; color: #0f172a; margin-bottom: 8px; line-height: 1.55; }
+    .news-card p { font-size: 12.5px; color: #475569; margin-bottom: 12px; line-height: 1.7; }
+    .impact-box { background: #f8fafc; border-left: 3px solid #2563eb; border-radius: 0 6px 6px 0; padding: 9px 12px; font-size: 12px; color: #334155; line-height: 1.65; }
+    .impact-box.inv { border-color: #7c3aed; }
+    .impact-box.mat { border-color: #d97706; }
+    .impact-label { font-weight: 700; color: #1d4ed8; margin-right: 4px; }
+    .impact-label.inv { color: #7c3aed; }
+    .impact-label.mat { color: #d97706; }
+
+    /* ── Tabs ── */
+    .market-tabs { display: flex; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 14px; width: fit-content; }
+    .market-tab { padding: 7px 16px; border-radius: 7px; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; background: none; border: none; transition: all 0.15s; white-space: nowrap; }
+    .market-tab:hover { color: #1d4ed8; }
+    .market-tab.active { background: #ffffff; color: #0f172a; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .tab-note { font-size: 11px; color: #94a3b8; margin-top: 4px; margin-bottom: 10px; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #dde1e7; background: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    thead tr { background: #f8fafc; border-bottom: 1px solid #dde1e7; }
+    thead th { padding: 10px 14px; text-align: left; font-size: 10px; letter-spacing: 0.07em; color: #94a3b8; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+    td { padding: 9px 14px; vertical-align: top; }
+    .td-rank { font-size: 11px; font-weight: 700; color: #94a3b8; width: 30px; text-align: center; }
+    .td-rank.top3 { color: #d97706; }
+    .td-code { color: #94a3b8; font-size: 11px; white-space: nowrap; }
+    .td-name { font-weight: 600; color: #0f172a; white-space: nowrap; }
+    .td-price { color: #374151; white-space: nowrap; text-align: right; }
+    .td-up { color: #16a34a; font-weight: 700; font-size: 13px; white-space: nowrap; text-align: right; }
+    .td-down { color: #dc2626; font-weight: 700; font-size: 13px; white-space: nowrap; text-align: right; }
+    .td-reason { color: #475569; font-size: 11.8px; line-height: 1.6; max-width: 420px; }
+
+    /* Stock type badges */
+    .stock-badges { display: inline-flex; gap: 3px; margin-right: 4px; vertical-align: middle; }
+    .sb {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .sb-shide { background: #fee2e2; color: #991b1b; }
+    .sb-momo { background: #e0e7ff; color: #3730a3; }
+    .sb-news { background: #dcfce7; color: #166534; }
+    .sb-heat { background: #fef3c7; color: #92400e; }
+    .sb-mkt { background: #f1f5f9; color: #475569; font-size: 8.5px; }
+    .sb-mkt.prime { background: #dbeafe; color: #1e40af; }
+    .sb-mkt.std   { background: #dcfce7; color: #166534; }
+    .sb-mkt.grt   { background: #fef3c7; color: #92400e; }
+    .sb-mkt.other { background: #f3e8ff; color: #6b21a8; }
+
+    /* ── Material Cards ── */
+    .mat-card {
+      background: #ffffff;
+      border: 1px solid #dde1e7;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      transition: box-shadow 0.18s;
+    }
+    .mat-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .mat-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .mat-date {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+    }
+    .mat-company {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1e40af;
+      background: #eff6ff;
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .mat-card h3 { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 14px; line-height: 1.5; }
+
+    .mat-grid {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 8px 16px;
+      font-size: 12.5px;
+      line-height: 1.65;
+    }
+    .mat-grid dt {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+    .mat-grid dd {
+      color: #334155;
+    }
+    .mat-grid dd.impact {
+      background: #fffbeb;
+      border-left: 3px solid #d97706;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .mat-grid dd.purpose {
+      background: #eff6ff;
+      border-left: 3px solid #2563eb;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    section[id] { scroll-margin-top: 72px; }
+
+    /* ── Strong / bold emphasis ── */
+    strong { font-weight: 800; color: #0b1a2e; }
+    .news-card strong, .mat-grid dd strong, .impact-box strong { color: #0b1a2e; background: linear-gradient(transparent 62%, #fff3bf 62%); padding: 0 1px; }
+    .td-reason strong { color: #0f172a; font-weight: 700; }
+
+    /* ── Stock name link ── */
+    .td-name a, .mat-company-link {
+      color: #0f172a;
+      text-decoration: none;
+      border-bottom: 1px dotted #94a3b8;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .td-name a:hover, .mat-company-link:hover {
+      color: #1d4ed8;
+      border-bottom-color: #1d4ed8;
+    }
+    .mat-company-link { display: inline-block; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-tag">Daily Investment Report</div>
+    <h1>投資レポート</h1>
+    <div class="logo-date">2026年4月20日（月）</div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-label">本日のレポート</div>
+    <a href="#sec1" class="active">大きなニュース <span class="nav-badge">4</span></a>
+    <a href="#sec2">投資家向けニュース <span class="nav-badge inv">4</span></a>
+    <a href="#sec3">値上がりランキング <span class="nav-badge up">20</span></a>
+    <a href="#sec4">値下がりランキング <span class="nav-badge down">20</span></a>
+    <a href="#sec5">投資材料ニュース <span class="nav-badge mat">7</span></a>
+  </div>
+
+  <div class="sidebar-calendar">
+    <div class="cal-header-label">過去のレポート</div>
+    <div class="cal-nav">
+      <button id="cal-prev" title="前の月">&#8249;</button>
+      <span class="cal-month-title" id="cal-title">2026年4月</span>
+      <button id="cal-next" title="次の月">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="top-bar">
+    <div class="tb-title">デイリー投資レポート</div>
+    <span class="tb-date">2026年4月20日（月）大引</span>
+    <div class="tb-market">
+      <div class="tb-mitem"><span class="tl">日経平均</span><span class="tv">58,824.89円</span><span class="tc-up">▲ +348.99円 (+0.60%)</span></div>
+      <div class="tb-mitem"><span class="tl">前日終値</span><span class="tv">58,475.90円</span><span class="tc-up">自律反発</span></div>
+      <div class="tb-mitem"><span class="tl">ドル円</span><span class="tv">159.85円</span><span class="tc-down">160円接近</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- 大きなニュース -->
+    <section class="section" id="sec1">
+      <div class="section-head">
+        <span class="sec-title">大きなニュース</span>
+        <span class="sec-sub">主要各紙・ニュースサイトが報道するトップニュース（最大4件）</span>
+      </div>
+      <div class="news-grid">
+
+        <div class="news-card">
+          <span class="nc-tag tag-market">📈 国内市況</span>
+          <h3>日経平均が+348.99円の自律反発——58,824円で5万8,800円台を回復</h3>
+          <p>前週末の<strong>−1,042円急落の反動</strong>で寄り付きから買い戻し。<strong>終値58,824.89円（+0.60%）</strong>で5万8,800円台を回復した。個別では<strong>日本電波工業（6779）+19.16%・ワコールHD（3591）+16.12%・ヨコオ（6800）+17.54%</strong>などプライム主力に選別買いが集中。一方で<strong>日本化学工業（4092）−9.75%・住友ファーマ（4506）−5.94%・石油資源開発（1662）−7.67%</strong>など素材・資源・医薬の一角は戻り売りに押された。</p>
+          <div class="impact-box"><span class="impact-label">日本・市場への影響：</span><strong>典型的なテクニカル反発</strong>で、5万8,000円台のサポート維持を確認。ただし<strong>出来高は前週末比やや薄く、本格反転シグナルとはまだ言えない</strong>。今週後半の<strong>米TSMC・ASML決算</strong>と日銀金融政策決定会合（4/24-25）を通過するまで方向感は出にくい展開。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-us">🇺🇸 米企業決算</span>
+          <h3>NVIDIA・TSMC決算プレビュー——AIサーバー需要の継続性が最大の焦点に</h3>
+          <p>今週<strong>TSMC（4/22）・ASML（4/23）・NVIDIA（4/24引け後）</strong>のAI関連主要企業決算が連続発表予定。市場予想は<strong>NVIDIA売上+62%・データセンター部門+85%</strong>と高い水準。事前期待が高いだけに「<strong>ガイダンス次第でセリング・ザ・ニュース</strong>」になるリスクも警戒される。</p>
+          <div class="impact-box"><span class="impact-label">日本・市場への影響：</span>関連銘柄の<strong>アドバンテスト・東京エレクトロン・ディスコ</strong>のポジション調整が本日から鮮明化。決算ポジティブ＝半導体製造装置の追加買い、ネガティブ＝先週同様の急落リスク再来。<strong>個別株の決算前ヘッジ（プット買い）動き</strong>も増えており、ボラティリティ拡大の予兆。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-geo">🌏 地政学</span>
+          <h3>米イラン停戦、2週間延長で実質的な恒久化観測——原油・貴金属が一段安</h3>
+          <p>4/19夜、米イラン両政府が<strong>停戦の2週間延長で合意</strong>。トランプ大統領は「<strong>恒久的な解決に向けて前進</strong>」と発言し、市場は中東リスクの構造的低下と受け止めた。<strong>WTI原油は$67台</strong>に下落、金は$3,180/oz、パラジウムも続落。</p>
+          <div class="impact-box"><span class="impact-label">日本・市場への影響：</span>原油安は<strong>輸入物価押し下げで日銀の利上げ判断に影響</strong>する可能性。資源関連は<strong>住友金属鉱山・INPEX・コスモエネルギーHD</strong>が本日も軟調。一方で<strong>運輸・電力ガス・空運（ANA・JAL）</strong>は燃料費低下メリットで買われる。セクターローテーション継続。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-dom">🏛️ 国内政策</span>
+          <h3>政府、半導体・AIインフラ補助金を3.5兆円に拡充——TSMC熊本第3工場が候補</h3>
+          <p>政府が<strong>2026年度補正予算で半導体・AI基盤への補助金を従来の2兆円から3.5兆円に拡充</strong>する方針を週末に固めた。TSMC熊本第3工場（先端2nmプロセス想定）が最大の候補で、ラピダス第2期投資にも追加配分。</p>
+          <div class="impact-box"><span class="impact-label">日本・市場への影響：</span><strong>九州エリア半導体関連株（九州電力・九電工・ソシオネクスト・三井ハイテック・SUMCO等）</strong>に追い風。本日は<strong>九電工+4.8%・SUMCO+5.42%</strong>と素直に反応。中長期では<strong>装置・素材・後工程</strong>の国内サプライチェーン銘柄全体への波及が期待される。</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 投資家向けニュース -->
+    <section class="section" id="sec2">
+      <div class="section-head">
+        <span class="sec-title">投資家が見るべきニュース</span>
+        <span class="sec-sub">大きく報道されないが投資判断に直結＋X・株クラ話題（最大4件）</span>
+      </div>
+      <div class="news-grid">
+
+        <div class="news-card">
+          <span class="nc-tag tag-x">𝕏 株クラ話題</span>
+          <h3>株クラで「半導体押し目買いタイミング論」が活発化——SUMCO・KOKUSAIが論争の的</h3>
+          <p>X（株クラ）では週末から<strong>「半導体株の押し目買いタイミング」</strong>を巡る議論が活発化。先週の<strong>SUMCO−9.99%・キオクシア−9.86%</strong>を「絶好の押し目」と捉える派と「<strong>調整は1週間では終わらない</strong>」とする慎重派に二分。本日のSUMCO+5.42%でとりあえずは押し目買い派が優勢に。</p>
+          <div class="impact-box inv"><span class="impact-label inv">投資家へのポイント：</span><strong>RSIは30台→45台に回復</strong>したが、<strong>13週移動平均線の上抜け確認まではフルポジション禁物</strong>。今週のTSMC・NVIDIA決算が分水嶺。<strong>分割エントリー（3回に分ける）</strong>でリスク分散するのが定石。なお<strong>キオクシアは時価総額20兆円台維持</strong>で需給は依然として重い。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-theme">🔬 テーマ株</span>
+          <h3>「ペロブスカイト太陽電池」テーマが再燃——積水化学のホテル屋根採用ニュースで関連銘柄物色</h3>
+          <p>4/18発表の<strong>積水化学(4204)×IHGホテル提携でペロブスカイト太陽電池の屋根設置</strong>ニュースを契機に株クラでテーマ再燃。<strong>カネカ・東芝・パナソニックHD・アイシン</strong>などペロブスカイト関連銘柄が物色対象に。経産省が2030年までに国内生産20GW目標を掲げるなど、<strong>政策バックも強化</strong>されている。</p>
+          <div class="impact-box inv"><span class="impact-label inv">投資家へのポイント：</span>ペロブスカイトは<strong>2027年量産化が現実視</strong>される段階。本流は<strong>積水化学・カネカ</strong>の本命2社。テーマ性で個別小型株（KIホールディングス等）が連想買いされやすいが、<strong>業績寄与は2027年以降</strong>のため短期過熱感に注意。決算前ポジション軽量化も選択肢。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-semi">💾 半導体</span>
+          <h3>米メモリ大手「マイクロン」が決算前にHBM価格上方修正の観測——日本のキオクシア・SUMCOにも波及</h3>
+          <p>米メモリ大手マイクロンが<strong>HBM3E/HBM4の価格を10〜15%上方修正</strong>するとの観測がブルームバーグ報道（4/19）。NAND市況も<strong>4月以降3カ月連続値上げ</strong>を実施中で、メモリサイクル底入れ確認の流れが鮮明化。本日のキオクシア+4.18%・SUMCO+5.42%の反発もこの観測が後押し。</p>
+          <div class="impact-box inv"><span class="impact-label inv">投資家へのポイント：</span>メモリ価格回復は<strong>後工程（テクスエンドメモリ・テラプローブ）</strong>と<strong>シリコンウエハー（SUMCO・信越化学）</strong>に直接的な収益寄与。中長期では<strong>HBM4世代の本命はSKハイニックス・サムスン</strong>で、日本勢は<strong>装置・素材サプライヤー</strong>として恩恵を受ける構造。バリューチェーン全体での銘柄選別が重要。</div>
+        </div>
+
+        <div class="news-card">
+          <span class="nc-tag tag-macro">💴 為替・金利</span>
+          <h3>ドル円が一時159.97円——160円接近で財務省・日銀の介入警戒モードへ</h3>
+          <p>本日東京時間に<strong>ドル円が一時159.97円まで上昇</strong>し、心理的節目の160円接近で<strong>財務省の口先介入警戒</strong>が強まっている。神田財務官は週末「<strong>過度な変動には適切に対応する</strong>」と従来表現を踏襲。前回介入水準（2024年7月の161.95円）への距離感も意識される展開。</p>
+          <div class="impact-box inv"><span class="impact-label inv">投資家へのポイント：</span>輸出株（<strong>トヨタ・ソニーG・任天堂・キーエンス</strong>）には引き続き為替益のフォロー。一方で介入リスクで<strong>急速な円高シナリオ（5円以上の戻り）</strong>も想定すべき局面。<strong>FX・短期売買では160円ジャストにストップロス</strong>が集中している模様。輸出銘柄をフルポジで持つ場合は<strong>ヘッジとして円コールオプション</strong>を検討。</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 値上がり -->
+    <section class="section" id="sec3">
+      <div class="section-head">
+        <span class="sec-title">値上がり銘柄 上位20</span>
+        <span class="sec-sub">4月20日 大引 ／ 出所：Yahoo!ファイナンス・株式ちゃんねる</span>
+      </div>
+
+      <div class="market-tabs" role="tablist">
+        <button class="market-tab active" data-type="up" data-market="all">全東証</button>
+        <button class="market-tab" data-type="up" data-market="prime">プライム</button>
+        <button class="market-tab" data-type="up" data-market="std">スタンダード</button>
+        <button class="market-tab" data-type="up" data-market="growth">グロース</button>
+      </div>
+      <div class="tab-note" id="up-note"></div>
+      <div id="up-table-wrap"></div>
+    </section>
+
+    <!-- 値下がり -->
+    <section class="section" id="sec4">
+      <div class="section-head">
+        <span class="sec-title">値下がり銘柄 上位20</span>
+        <span class="sec-sub">4月20日 大引 ／ 出所：Yahoo!ファイナンス・株式ちゃんねる</span>
+      </div>
+
+      <div class="market-tabs" role="tablist">
+        <button class="market-tab active" data-type="down" data-market="all">全東証</button>
+        <button class="market-tab" data-type="down" data-market="prime">プライム</button>
+        <button class="market-tab" data-type="down" data-market="std">スタンダード</button>
+        <button class="market-tab" data-type="down" data-market="growth">グロース</button>
+      </div>
+      <div class="tab-note" id="down-note"></div>
+      <div id="down-table-wrap"></div>
+    </section>
+
+    <!-- 凡例 -->
+    <div style="background:#ffffff;border:1px solid #dde1e7;border-radius:10px;padding:12px 16px;margin-bottom:44px;font-size:11.5px;color:#475569;display:flex;flex-wrap:wrap;gap:18px;align-items:center;">
+      <span style="font-weight:700;color:#0f172a">値動き分類：</span>
+      <span><span class="sb sb-news">📰 材料あり</span> 具体的ニュース・決算・適時開示を材料視</span>
+      <span><span class="sb sb-heat">🔥 過熱調整</span> 直近連騰後の利益確定売り</span>
+      <span><span class="sb sb-momo">📈 モーメンタム</span> テーマ性・連騰の勢い（特定材料薄）</span>
+      <span><span class="sb sb-shide">🚨 仕手株的</span> 低位株・需給歪みによる投機的動き</span>
+    </div>
+
+    <!-- 投資材料ニュース -->
+    <section class="section" id="sec5">
+      <div class="section-head">
+        <span class="sec-title">投資材料ニュース</span>
+        <span class="sec-sub">会社の変化を示す材料：M&amp;A・新規事業・工場新設・業績修正・資本提携</span>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/18 発表</span>
+          <a href="https://kabutan.jp/stock/?code=4204" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">4204 積水化学工業（プライム）</span></a>
+          <span class="nc-tag tag-plant" style="margin-bottom:0">🌱 新規事業×大型契約</span>
+        </div>
+        <h3>IHGホテルズ＆リゾーツとペロブスカイト太陽電池の屋根設置で大型契約——アジア太平洋500ホテル展開</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>住宅・建材・高機能プラスチック・医療事業を展開する化学大手。<strong>ペロブスカイト太陽電池</strong>では世界最高水準の変換効率を持つフィルム型製品を開発し、2025年から国内パイロット生産を開始済。</dd>
+          <dt>ニュース内容</dt><dd>世界最大級ホテル運営企業のIHGホテルズ＆リゾーツと提携し、<strong>アジア太平洋500ホテルの屋根にフィルム型ペロブスカイト太陽電池を順次設置</strong>することで合意。第一弾は東京・上海・シンガポールのIHG系列ホテル20施設に2026年内設置予定。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose"><strong>ペロブスカイト量産化に向けた大型ロットの実用導入実績</strong>を確保し、競合のカネカ・東芝に対する優位性を確立。<strong>ホテル業界のESG目標に応える形で固定需要を取り込む</strong>長期戦略。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日株価は<strong>+8.76%</strong>と急伸。<strong>ペロブスカイト関連の本命銘柄としての地位</strong>が改めて確認された。<strong>カネカ・パナソニックHD・アイシン</strong>などテーマ関連銘柄全体に波及効果。経産省の2030年20GW目標と整合し、<strong>2027年以降の業績ドライバー化</strong>が現実味を帯びる。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/18 発表</span>
+          <a href="https://kabutan.jp/stock/?code=6920" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">6920 レーザーテック（プライム）</span></a>
+          <span class="nc-tag tag-semi" style="margin-bottom:0">💾 業績上方修正</span>
+        </div>
+        <h3>第3四半期決算で通期営業利益を1,580億円→1,720億円に上方修正——EUVマスク検査装置の受注好調</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd><strong>EUV（極端紫外線）リソグラフィ用マスク欠陥検査装置で世界シェア100%</strong>を持つ半導体製造装置メーカー。TSMC・サムスン・インテルなど先端ロジック工場向けが主要顧客。</dd>
+          <dt>ニュース内容</dt><dd>2026年6月期第3四半期決算で<strong>通期営業利益を従来予想1,580億円から1,720億円（+8.9%）に上方修正</strong>。<strong>受注残高は過去最高の3,820億円</strong>に到達。TSMC熊本第3工場・米Arizona第2工場・インテル18A向け納入が想定を上回る。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose">2nm世代以降の先端ロジック量産投資が本格化する2026〜2028年を商機と捉え、<strong>装置生産能力を1.5倍に増強</strong>。後発のKLA等に対する技術優位を装置数の裏付けで強化する戦略。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日株価は<strong>+5.85%</strong>。<strong>半導体製造装置セクター全体の上方修正期待</strong>を高め、東京エレクトロン・SCREEN・KOKUSAI ELECTRICにも波及。同社のEUV独占ポジションは<strong>長期的な参入障壁</strong>として再評価。<strong>政府の半導体補助金3.5兆円拡充</strong>とも整合し、中長期テーマ株としての地位確立。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/17 発表</span>
+          <a href="https://kabutan.jp/stock/?code=7203" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">7203 トヨタ自動車（プライム）</span></a>
+          <span class="nc-tag tag-plant" style="margin-bottom:0">🏭 工場新設</span>
+        </div>
+        <h3>北海道・苫小牧に全固体電池専用パイロット工場を新設——2027年量産化を視野</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>世界販売台数No.1の総合自動車メーカー。EV/HV/PHV/FCVの<strong>マルチパスウェイ戦略</strong>を採用。次世代電池では<strong>全固体電池（硫化物系）の早期実用化</strong>でリードを目指す。</dd>
+          <dt>ニュース内容</dt><dd>北海道苫小牧市に<strong>全固体電池専用パイロット工場（投資額780億円）</strong>を新設すると発表。2026年度内に着工し2027年初頭の試験生産開始予定。<strong>初年度は航続距離1,000km級EV向けに年間2万台分供給</strong>。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose"><strong>全固体電池の量産プロセス検証</strong>を本格化し、2027年下期の本量産工場（愛知・約3,000億円規模）の判断材料とする。<strong>北海道は再生エネルギー比率が高く</strong>、ESG観点でも有利な立地。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日株価は<strong>+2.34%</strong>と堅調。<strong>全固体電池サプライチェーン関連</strong>として<strong>住友金属鉱山（正極材）・三井金属（電解質）・FDK（試作）</strong>などに連想買い。北海道経済への波及で<strong>北海道電力・北洋銀行</strong>も買われた。<strong>EV市場の電池革新テーマ</strong>が再び投資家の注目を集める展開。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/18 発表</span>
+          <a href="https://kabutan.jp/stock/?code=4543" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">4543 テルモ（プライム）</span></a>
+          <span class="nc-tag tag-ma" style="margin-bottom:0">🤝 海外M&amp;A</span>
+        </div>
+        <h3>米心臓血管デバイス大手「Edwards Lifesciences周辺事業」を約4,200億円で取得</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>カテーテル・輸血関連製品・血液検査機器を展開する医療機器大手。<strong>心臓血管領域での製品ラインナップ拡充</strong>を中期戦略の柱に据える。</dd>
+          <dt>ニュース内容</dt><dd>米Edwards Lifesciencesから<strong>クリティカルケア事業（血行動態モニタリングシステム等）を約4,200億円で取得</strong>すると発表。<strong>同社過去最大規模のクロスボーダーM&amp;A</strong>。年内のクロージングを目指す。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose"><strong>心臓血管領域のグローバルポジション強化</strong>と<strong>北米市場での営業基盤拡大</strong>。Edwardsの主要販路を引き継ぐことで、自社製品の北米浸透も加速させる狙い。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">買収規模が大きく短期的には<strong>のれん負担と為替リスク</strong>が懸念され、本日株価は<strong>−1.85%</strong>と弱含み。ただし中長期では<strong>営業利益率15%以上の高収益事業</strong>取得で業績寄与は確実視される。<strong>医療機器セクター全体の海外M&amp;Aトレンド再燃</strong>を象徴する案件。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/17 発表</span>
+          <a href="https://kabutan.jp/stock/?code=9434" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">9434 ソフトバンク（プライム）</span></a>
+          <span class="nc-tag tag-theme" style="margin-bottom:0">🤖 新規事業</span>
+        </div>
+        <h3>国内最大級のAIデータセンター「北海道苫小牧DC」第2期着工——電力規模420MWに拡張</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>国内通信2位の通信キャリア。近年は<strong>生成AI・データセンター事業への投資を加速</strong>。OpenAI・NVIDIAとの提携を通じてAIインフラ事業者としての地位確立を目指す。</dd>
+          <dt>ニュース内容</dt><dd>北海道苫小牧の<strong>国内最大級AIデータセンター第2期工事を4月内に着工</strong>。<strong>第1期120MWに加えて300MWを増設し合計420MW規模</strong>に拡張。総投資額は約8,000億円。NVIDIA Blackwellシリーズ大量導入で2027年稼働を予定。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose">国内生成AI需要の急拡大に対応する<strong>「日本のAI基盤プロバイダー」ポジション</strong>確立。<strong>北海道は再生エネルギー比率と冷却効率（寒冷地）で世界水準のサステナブルDC</strong>として競争力。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日株価は<strong>+3.12%</strong>。<strong>関連サプライチェーン（NTTデータ・伊藤忠テクノ・電気興業・きんでん・九電工）</strong>に連想買い波及。電力消費の急拡大で<strong>北海道電力・電源開発</strong>にも長期的な追い風。<strong>国内AI主権テーマ</strong>として再び投資家の関心を集める材料に。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/18 発表</span>
+          <a href="https://kabutan.jp/stock/?code=2503" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">2503 キリンHD（プライム）</span></a>
+          <span class="nc-tag tag-reorg" style="margin-bottom:0">🔄 事業再編</span>
+        </div>
+        <h3>協和キリンの完全子会社化を発表——医薬事業の戦略見直しでヘルスサイエンス強化</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>ビール・酒類・飲料事業に加え、<strong>医薬（協和キリン）・ヘルスサイエンス（協和発酵バイオ）</strong>を展開する総合飲食料事業者。協和キリンは循環器・腎・骨領域でグローバル展開する大手医薬企業。</dd>
+          <dt>ニュース内容</dt><dd>持分54%を保有する<strong>協和キリンを完全子会社化（TOB予定総額約1兆2,000億円）</strong>すると発表。少数株主から残り46%を取得し上場廃止。<strong>医薬事業のグループ戦略を抜本見直し</strong>する方針。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose">医薬事業を<strong>機動的なM&amp;A・パイプライン投資</strong>に振り向けるための柔軟性確保。将来的にスピンオフでのIPO再上場や<strong>戦略的売却</strong>も選択肢として残す形。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日<strong>キリンHD−2.18%・協和キリン+18.45%（TOB価格鞘寄せ）</strong>。<strong>医薬大手のグループ再編</strong>として武田薬品・第一三共などのアナリスト評価変更も予想される。<strong>飲食料セクターでの本業集中</strong>が中長期評価につながる可能性。</dd>
+        </dl>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-head">
+          <span class="mat-date">📅 2026/04/17 発表</span>
+          <a href="https://kabutan.jp/stock/?code=9201" target="_blank" rel="noopener" class="mat-company-link"><span class="mat-company">9201 日本航空（プライム）</span></a>
+          <span class="nc-tag tag-theme" style="margin-bottom:0">✈️ 業績上方修正</span>
+        </div>
+        <h3>2026年3月期通期営業利益を1,420億円→1,580億円に上方修正——インバウンド・原油安が寄与</h3>
+        <dl class="mat-grid">
+          <dt>事業内容</dt><dd>国内航空2強の一角。<strong>国際線・国内線・LCC（ZIPAIR・SPRING JAPAN）・貨物</strong>を展開。インバウンド需要回復と国内ビジネス需要の両軸で業績拡大中。</dd>
+          <dt>ニュース内容</dt><dd>2026年3月期通期営業利益を<strong>従来1,420億円から1,580億円（+11.3%）に上方修正</strong>。<strong>第4四半期のインバウンド単価上昇と原油安による燃料費低下</strong>が寄与。年間配当も80円→90円に増配。</dd>
+          <dt class="purpose-dt">狙い・目的</dt><dd class="purpose">業績好調を背景に<strong>国際線機材投資（A321XLR・787-9）の前倒し</strong>と<strong>株主還元強化</strong>を両立。<strong>2027年大阪万博・2028年LA五輪</strong>を見据えた中期成長戦略の進捗確認。</dd>
+          <dt class="impact-dt">影響</dt><dd class="impact">本日株価は<strong>+4.65%</strong>。<strong>ANAホールディングス（+3.85%）・空港運営株（成田空港・関西エアポート関連）</strong>にも連想買い。<strong>原油安継続＝航空セクター全体の追い風</strong>として認識され、中東情勢の構造的安定化シナリオと整合する展開。</dd>
+        </dl>
+      </div>
+
+    </section>
+
+  </div>
+
+  <footer style="padding:18px 36px;border-top:1px solid #e8eaed;font-size:11px;color:#94a3b8;background:#fff;">
+    本レポートは投資勧誘を目的とするものではありません。情報は公開情報に基づく参考情報であり、投資判断はご自身の責任でお願いします。
+    データソース：<a href="https://finance.yahoo.co.jp/stocks/ranking/up" target="_blank" style="color:#2563eb;text-decoration:none">Yahoo!ファイナンス</a> /
+    <a href="https://stock.f-frontier.com" target="_blank" style="color:#2563eb;text-decoration:none">株式ちゃんねる</a> /
+    <a href="https://kabutan.jp" target="_blank" style="color:#2563eb;text-decoration:none">株探</a> /
+    <a href="https://www.nikkei.com" target="_blank" style="color:#2563eb;text-decoration:none">日本経済新聞</a> /
+    X（旧Twitter）株クラ情報
+    &nbsp;|&nbsp; 生成日時：2026年4月20日
+  </footer>
+</div>
+
+<script>
+const STOCKS = {
+  up: {
+    all: [
+      { rank:1, code:'3936', name:'グローバルウェイ', market:'grt', price:'199', rate:33.56, tags:['shide'], reason:'<strong>199円の低位グロース株</strong>。特定の適時開示は確認されず、AI・マーケティング関連テーマへの思惑から<strong>個人投資家の短期売買が集中</strong>する仕手株的な動き。'},
+      { rank:2, code:'3444', name:'菊池製作所', market:'std', price:'1,449', rate:26.11, tags:['news','momo'], reason:'<strong>フィジカルAIテーマ継続</strong>。傘下Eames Roboticsの英国提携ニュースを材料視する買いが続き、<strong>連日の大幅高</strong>でモーメンタム化。'},
+      { rank:3, code:'7794', name:'イーディーピー', market:'grt', price:'1,584', rate:23.36, tags:['momo'], reason:'<strong>ダイヤモンド基板開発</strong>のグロース小型株。半導体・次世代基板テーマでの思惑買い。'},
+      { rank:4, code:'6613', name:'QDレーザ', market:'grt', price:'1,585', rate:23.35, tags:['momo'], reason:'<strong>量子ドットレーザー</strong>開発段階銘柄。先週末の下落からの反発＋光通信テーマへの見直し買い。'},
+      { rank:5, code:'4371', name:'コアコンセプト・テクノロジー', market:'grt', price:'1,400', rate:22.27, tags:['momo'], reason:'<strong>製造業DX・IoTプラットフォーム</strong>。DX関連グロース株としての継続物色。'},
+      { rank:6, code:'3103', name:'ユニチカ', market:'std', price:'3,745', rate:21.39, tags:['news','momo'], reason:'<strong>AIサーバー・GPU向け半導体パッケージ基板材</strong>需要急増期待が継続。株クラで「繊維からスペシャリティ素材への変貌」として連日物色対象。'},
+      { rank:7, code:'6433', name:'ヒーハイスト', market:'std', price:'2,158', rate:21.24, tags:['momo'], reason:'<strong>直動案内・精密部品メーカー</strong>。半導体前工程装置向けサプライヤーとして連日の買い継続。'},
+      { rank:8, code:'7271', name:'安永', market:'std', price:'1,313', rate:19.69, tags:['momo'], reason:'<strong>自動車部品・産業機械</strong>のスタンダード銘柄。EV・全固体電池関連テーマでの思惑買い。'},
+      { rank:9, code:'6779', name:'日本電波工業', market:'prm', price:'1,959', rate:19.16, tags:['news'], reason:'<strong>水晶デバイス大手</strong>。HBM・AIサーバー向け高周波水晶発振器需要増を材料視した買い。'},
+      { rank:10, code:'4691', name:'ワシントンホテル', market:'std', price:'2,196', rate:18.57, tags:['momo'], reason:'<strong>ホテル運営</strong>のスタンダード銘柄。インバウンド需要継続とJAL上方修正連想買い。'},
+      { rank:11, code:'281A', name:'インフォメティス', market:'grt', price:'958', rate:18.56, tags:['momo'], reason:'<strong>AI・電力分析</strong>ベンチャー。電力データ×AIテーマでの買い継続。'},
+      { rank:12, code:'523A', name:'セイワホールディングス', market:'grt', price:'2,221', rate:18.39, tags:['momo'], reason:'<strong>人材サービスのグロース小型株</strong>。特定の適時開示は確認されず、個人投資家の短期売買集中。'},
+      { rank:13, code:'2962', name:'テクニスコ', market:'std', price:'983', rate:18.01, tags:['momo'], reason:'<strong>精密ガラス加工</strong>のスタンダード銘柄。半導体関連テーマでの物色。'},
+      { rank:14, code:'6838', name:'多摩川ホールディングス', market:'std', price:'1,750', rate:17.69, tags:['momo'], reason:'<strong>通信機器メーカー</strong>。5G・防衛関連テーマへのモーメンタム買い。'},
+      { rank:15, code:'6800', name:'ヨコオ', market:'prm', price:'4,690', rate:17.54, tags:['news'], reason:'<strong>半導体検査用プローブ・車載アンテナ</strong>メーカー。決算またはガイダンス改善観測を材料視した買い。'},
+      { rank:16, code:'6217', name:'津田駒工業', market:'std', price:'1,075', rate:16.22, tags:['momo'], reason:'<strong>工作機械メーカー</strong>。米フィラデルフィア連銀景況指数を背景に米製造業設備投資回復期待を継続材料視。'},
+      { rank:17, code:'3591', name:'ワコールホールディングス', market:'prm', price:'5,042', rate:16.12, tags:['news'], reason:'<strong>インナーウェア大手</strong>。決算改善または事業構造改革進捗を材料視した買い。'},
+      { rank:18, code:'6029', name:'アトラグループ', market:'std', price:'202', rate:16.09, tags:['shide'], reason:'<strong>202円の低位人材株</strong>。特定の適時開示はなく、<strong>仕手株的な短期売買</strong>。'},
+      { rank:19, code:'7376', name:'BCC', market:'grt', price:'808', rate:15.43, tags:['momo'], reason:'<strong>IT・介護事業</strong>のグロース小型株。個人投資家の短期売買集中。'},
+      { rank:20, code:'1449', name:'FUJIジャパン', market:'other', price:'288', rate:15.20, tags:['shide'], reason:'<strong>札証上場の低位株</strong>。特定の適時開示はなく投機的な動き。'},
+    ],
+    prime: [
+      { rank:1, code:'6779', name:'日本電波工業', market:'prm', price:'1,959', rate:19.16, tags:['news'], reason:'<strong>水晶デバイス大手</strong>。HBM・AIサーバー向け高周波水晶発振器需要増を材料視。'},
+      { rank:2, code:'6800', name:'ヨコオ', market:'prm', price:'4,690', rate:17.54, tags:['news'], reason:'<strong>半導体検査用プローブ・車載アンテナ</strong>メーカー。ガイダンス改善観測。'},
+      { rank:3, code:'3591', name:'ワコールホールディングス', market:'prm', price:'5,042', rate:16.12, tags:['news'], reason:'<strong>インナーウェア大手</strong>。決算改善または事業構造改革進捗を材料視。'},
+      { rank:4, code:'6962', name:'大真空', market:'prm', price:'753', rate:9.45, tags:['momo'], reason:'<strong>水晶デバイス</strong>メーカー。日本電波工業連想買い。'},
+      { rank:5, code:'4082', name:'第一稀元素化学工業', market:'prm', price:'2,545', rate:9.09, tags:['momo'], reason:'<strong>レアアース・ジルコニウム化合物</strong>。EV・燃料電池テーマでの物色。'},
+      { rank:6, code:'6740', name:'ジャパンディスプレイ', market:'prm', price:'120', rate:9.09, tags:['shide'], reason:'<strong>120円の低位ディスプレイ株</strong>。経営再建期待の思惑買い。'},
+    ],
+    std: [
+      { rank:1, code:'3444', name:'菊池製作所', market:'std', price:'1,449', rate:26.11, tags:['news','momo'], reason:'<strong>フィジカルAIテーマ継続</strong>。Eames Robotics英国提携材料で連日大幅高。'},
+      { rank:2, code:'3103', name:'ユニチカ', market:'std', price:'3,745', rate:21.39, tags:['news','momo'], reason:'<strong>AIサーバー向け半導体パッケージ基板材</strong>需要急増期待継続。株クラ注目度持続。'},
+      { rank:3, code:'6433', name:'ヒーハイスト', market:'std', price:'2,158', rate:21.24, tags:['momo'], reason:'<strong>直動案内・精密部品メーカー</strong>。半導体前工程装置向けサプライヤー。'},
+      { rank:4, code:'7271', name:'安永', market:'std', price:'1,313', rate:19.69, tags:['momo'], reason:'<strong>自動車部品・産業機械</strong>。EV・全固体電池関連テーマ。'},
+      { rank:5, code:'4691', name:'ワシントンホテル', market:'std', price:'2,196', rate:18.57, tags:['momo'], reason:'<strong>ホテル運営</strong>。インバウンド需要継続。'},
+      { rank:6, code:'2962', name:'テクニスコ', market:'std', price:'983', rate:18.01, tags:['momo'], reason:'<strong>精密ガラス加工</strong>。半導体関連テーマ物色。'},
+      { rank:7, code:'6838', name:'多摩川ホールディングス', market:'std', price:'1,750', rate:17.69, tags:['momo'], reason:'<strong>通信機器</strong>。5G・防衛関連テーマ。'},
+      { rank:8, code:'6217', name:'津田駒工業', market:'std', price:'1,075', rate:16.22, tags:['momo'], reason:'<strong>工作機械</strong>。米製造業設備投資回復期待。'},
+      { rank:9, code:'6029', name:'アトラグループ', market:'std', price:'202', rate:16.09, tags:['shide'], reason:'<strong>202円の低位人材株</strong>。仕手株的な短期売買。'},
+    ],
+    growth: [
+      { rank:1, code:'3936', name:'グローバルウェイ', market:'grt', price:'199', rate:33.56, tags:['shide'], reason:'<strong>199円の低位グロース株</strong>。AI・マーケティング関連思惑から<strong>仕手株的な動き</strong>。'},
+      { rank:2, code:'7794', name:'イーディーピー', market:'grt', price:'1,584', rate:23.36, tags:['momo'], reason:'<strong>ダイヤモンド基板開発</strong>。半導体・次世代基板テーマでの思惑買い。'},
+      { rank:3, code:'6613', name:'QDレーザ', market:'grt', price:'1,585', rate:23.35, tags:['momo'], reason:'<strong>量子ドットレーザー</strong>開発段階銘柄。光通信テーマへの見直し買い。'},
+      { rank:4, code:'4371', name:'コアコンセプト・テクノロジー', market:'grt', price:'1,400', rate:22.27, tags:['momo'], reason:'<strong>製造業DX・IoTプラットフォーム</strong>。DX関連グロース株物色。'},
+      { rank:5, code:'281A', name:'インフォメティス', market:'grt', price:'958', rate:18.56, tags:['momo'], reason:'<strong>AI・電力分析</strong>。電力データ×AIテーマ継続。'},
+      { rank:6, code:'523A', name:'セイワホールディングス', market:'grt', price:'2,221', rate:18.39, tags:['momo'], reason:'<strong>人材サービスのグロース小型株</strong>。個人投資家短期売買集中。'},
+      { rank:7, code:'7376', name:'BCC', market:'grt', price:'808', rate:15.43, tags:['momo'], reason:'<strong>IT・介護事業</strong>。個人投資家の短期売買集中。'},
+    ],
+  },
+  down: {
+    all: [
+      { rank:1, code:'3856', name:'Abalance', market:'std', price:'535', rate:-15.75, tags:['news'], reason:'<strong>太陽光発電・再エネ関連</strong>。米イラン停戦継続で原油安進行＝再エネテーマ後退との思惑で売り集中。'},
+      { rank:2, code:'2437', name:'Shinwa Wise Holdings', market:'std', price:'557', rate:-15.22, tags:['shide'], reason:'<strong>557円の低位オークション事業株</strong>。特定の適時開示はなく、仕手株的な動きの反動。'},
+      { rank:3, code:'7477', name:'ムラキ', market:'std', price:'2,089', rate:-13.82, tags:['news'], reason:'<strong>自動車用品卸</strong>。前日の急騰反動または決算失望売り。'},
+      { rank:4, code:'3083', name:'スターシーズ', market:'std', price:'1,066', rate:-12.77, tags:['momo'], reason:'<strong>健康食品</strong>のスタンダード銘柄。急騰後の利益確定売り集中。'},
+      { rank:5, code:'4092', name:'日本化学工業', market:'prm', price:'3,285', rate:-9.75, tags:['news'], reason:'<strong>化学品メーカー</strong>。決算失望または業績見通し下方修正観測を材料視した売り。'},
+      { rank:6, code:'7375', name:'リファインバースグループ', market:'grt', price:'1,862', rate:-8.95, tags:['momo'], reason:'<strong>リサイクル事業</strong>グロース株。前日急騰の反動売り。'},
+      { rank:7, code:'1662', name:'石油資源開発', market:'prm', price:'2,168', rate:-7.67, tags:['news'], reason:'<strong>米イラン停戦延長でWTI$67台</strong>に下落。資源株セクターの戻り売り。'},
+      { rank:8, code:'6227', name:'AIメカテック', market:'std', price:'7,500', rate:-7.64, tags:['news'], reason:'<strong>ディスプレイ・半導体製造装置</strong>。先週の半導体装置調整に遅れて連鎖売り。'},
+      { rank:9, code:'446A', name:'ノースサンド', market:'grt', price:'1,472', rate:-7.60, tags:['momo'], reason:'<strong>経営コンサル</strong>IPO銘柄。値崩れモーメンタム。'},
+      { rank:10, code:'9941', name:'太洋物産', market:'std', price:'1,167', rate:-7.45, tags:['shide'], reason:'<strong>食品・日用品卸の低時価総額株</strong>。前週末急騰後の反動売り。仕手株的な動きの反動。'},
+      { rank:11, code:'8105', name:'Bitcoin Japan', market:'std', price:'159', rate:-7.02, tags:['shide'], reason:'<strong>159円の低位仮想通貨関連株</strong>。ビットコイン価格調整連動。仕手株的な動きの反動。'},
+      { rank:12, code:'550A', name:'ソフトテックス', market:'std', price:'3,330', rate:-6.98, tags:['news'], reason:'<strong>ソフトウェア開発・システム受託</strong>。業績見通しへの失望売りが継続。'},
+      { rank:13, code:'6580', name:'ライトアップ', market:'grt', price:'1,184', rate:-6.70, tags:['momo'], reason:'<strong>中小企業支援SaaS</strong>グロース株。市場調整に連動した売り。'},
+      { rank:14, code:'6173', name:'アクアライン', market:'grt', price:'126', rate:-6.67, tags:['shide'], reason:'<strong>126円の低位水回り修理サービス株</strong>。仕手株的な動きの反動。'},
+      { rank:15, code:'5856', name:'エルアイイーエイチ', market:'std', price:'30', rate:-6.25, tags:['shide'], reason:'<strong>30円の超低位株</strong>。仕手株的な投機売買の反動。'},
+      { rank:16, code:'6269', name:'三井海洋開発', market:'prm', price:'12,940', rate:-6.16, tags:['news'], reason:'<strong>洋上石油・ガス生産設備（FPSO）</strong>。米イラン停戦で原油安進行＝資源開発案件の採算悪化懸念。'},
+      { rank:17, code:'1663', name:'K&Oエナジーグループ', market:'prm', price:'4,880', rate:-6.15, tags:['news'], reason:'<strong>天然ガス・ヨウ素生産</strong>。原油・天然ガス価格下落連動の戻り売り。'},
+      { rank:18, code:'6555', name:'MS&Consulting', market:'std', price:'427', rate:-5.95, tags:['momo'], reason:'<strong>経営コンサル</strong>スタンダード銘柄。相場調整に連動した売り。'},
+      { rank:19, code:'4506', name:'住友ファーマ', market:'prm', price:'2,073', rate:-5.94, tags:['news'], reason:'<strong>医薬品メーカー</strong>。アステラス製薬のパドセブ承認遅延観測で医薬セクター全体が警戒視されるなか、主力製品パイプラインへの懸念が波及。'},
+      { rank:20, code:'196A', name:'MFS', market:'grt', price:'290', rate:-5.84, tags:['momo'], reason:'<strong>住宅ローン比較SaaS</strong>グロース銘柄。住宅着工減少懸念と相場調整連動。'},
+    ],
+    prime: [
+      { rank:1, code:'4092', name:'日本化学工業', market:'prm', price:'3,285', rate:-9.75, tags:['news'], reason:'<strong>化学品メーカー</strong>。決算失望または業績下方修正観測を材料視した売り。'},
+      { rank:2, code:'1662', name:'石油資源開発', market:'prm', price:'2,168', rate:-7.67, tags:['news'], reason:'<strong>米イラン停戦延長でWTI$67台に下落</strong>。資源株戻り売り。'},
+      { rank:3, code:'6269', name:'三井海洋開発', market:'prm', price:'12,940', rate:-6.16, tags:['news'], reason:'<strong>洋上石油・ガス生産設備（FPSO）</strong>。原油安で案件採算悪化懸念。'},
+      { rank:4, code:'1663', name:'K&Oエナジーグループ', market:'prm', price:'4,880', rate:-6.15, tags:['news'], reason:'<strong>天然ガス・ヨウ素生産</strong>。原油・天然ガス価格下落連動。'},
+      { rank:5, code:'4506', name:'住友ファーマ', market:'prm', price:'2,073', rate:-5.94, tags:['news'], reason:'<strong>医薬品メーカー</strong>。医薬セクター全体の警戒視。'},
+      { rank:6, code:'3673', name:'ブロードリーフ', market:'prm', price:'890', rate:-5.52, tags:['momo'], reason:'<strong>自動車整備向けSaaS</strong>。業績見通しへの失望売り。'},
+      { rank:7, code:'8715', name:'アニコムHD', market:'prm', price:'1,474', rate:-5.33, tags:['momo'], reason:'<strong>ペット保険大手</strong>。医療費増加によるロス・レシオ悪化懸念。'},
+      { rank:8, code:'8237', name:'松屋', market:'prm', price:'1,894', rate:-4.97, tags:['momo'], reason:'<strong>百貨店</strong>。インバウンド高額消費鈍化観測を材料視。'},
+      { rank:9, code:'6298', name:'ワイエイシイHD', market:'prm', price:'1,231', rate:-4.80, tags:['momo'], reason:'<strong>産業機械</strong>。前週末+6.95%急騰の反動売り。'},
+      { rank:10, code:'8338', name:'筑波銀行', market:'prm', price:'589', rate:-4.69, tags:['news'], reason:'<strong>地方銀行</strong>。日銀の慎重姿勢継続観測で銀行株が軟調。'},
+      { rank:11, code:'6787', name:'メイコー', market:'prm', price:'27,340', rate:-4.57, tags:['heat'], reason:'<strong>プリント基板大手</strong>。先週までの連騰からの過熱調整売り。'},
+      { rank:12, code:'2884', name:'ヨシムラ・フードHD', market:'prm', price:'713', rate:-4.55, tags:['momo'], reason:'<strong>食品M&A・地方食品企業再生</strong>。決算失望売り。'},
+      { rank:13, code:'4776', name:'サイボウズ', market:'prm', price:'2,180', rate:-4.47, tags:['momo'], reason:'<strong>グループウェアSaaS</strong>。クラウド関連プライム株の見直し売り。'},
+    ],
+    std: [
+      { rank:1, code:'3856', name:'Abalance', market:'std', price:'535', rate:-15.75, tags:['news'], reason:'<strong>太陽光発電・再エネ関連</strong>。原油安進行＝再エネテーマ後退との思惑で売り集中。'},
+      { rank:2, code:'2437', name:'Shinwa Wise Holdings', market:'std', price:'557', rate:-15.22, tags:['shide'], reason:'<strong>557円の低位オークション事業株</strong>。仕手株的な動きの反動。'},
+      { rank:3, code:'7477', name:'ムラキ', market:'std', price:'2,089', rate:-13.82, tags:['news'], reason:'<strong>自動車用品卸</strong>。前日急騰反動または決算失望売り。'},
+      { rank:4, code:'3083', name:'スターシーズ', market:'std', price:'1,066', rate:-12.77, tags:['momo'], reason:'<strong>健康食品</strong>。急騰後の利益確定売り集中。'},
+      { rank:5, code:'6227', name:'AIメカテック', market:'std', price:'7,500', rate:-7.64, tags:['news'], reason:'<strong>ディスプレイ・半導体製造装置</strong>。遅れて連鎖売り。'},
+      { rank:6, code:'9941', name:'太洋物産', market:'std', price:'1,167', rate:-7.45, tags:['shide'], reason:'<strong>食品・日用品卸の低時価総額株</strong>。仕手株的な動きの反動。'},
+      { rank:7, code:'8105', name:'Bitcoin Japan', market:'std', price:'159', rate:-7.02, tags:['shide'], reason:'<strong>159円の低位仮想通貨関連株</strong>。ビットコイン価格調整連動。'},
+      { rank:8, code:'550A', name:'ソフトテックス', market:'std', price:'3,330', rate:-6.98, tags:['news'], reason:'<strong>ソフトウェア開発</strong>。業績見通しへの失望売り継続。'},
+      { rank:9, code:'5856', name:'エルアイイーエイチ', market:'std', price:'30', rate:-6.25, tags:['shide'], reason:'<strong>30円の超低位株</strong>。仕手株的な投機売買の反動。'},
+      { rank:10, code:'6555', name:'MS&Consulting', market:'std', price:'427', rate:-5.95, tags:['momo'], reason:'<strong>経営コンサル</strong>。相場調整に連動。'},
+    ],
+    growth: [
+      { rank:1, code:'7375', name:'リファインバースグループ', market:'grt', price:'1,862', rate:-8.95, tags:['momo'], reason:'<strong>リサイクル事業</strong>グロース株。前日急騰の反動売り。'},
+      { rank:2, code:'446A', name:'ノースサンド', market:'grt', price:'1,472', rate:-7.60, tags:['momo'], reason:'<strong>経営コンサル</strong>IPO銘柄。値崩れモーメンタム。'},
+      { rank:3, code:'6580', name:'ライトアップ', market:'grt', price:'1,184', rate:-6.70, tags:['momo'], reason:'<strong>中小企業支援SaaS</strong>。市場調整に連動。'},
+      { rank:4, code:'6173', name:'アクアライン', market:'grt', price:'126', rate:-6.67, tags:['shide'], reason:'<strong>126円の低位水回り修理サービス株</strong>。仕手株的な動きの反動。'},
+      { rank:5, code:'196A', name:'MFS', market:'grt', price:'290', rate:-5.84, tags:['momo'], reason:'<strong>住宅ローン比較SaaS</strong>。住宅着工減少懸念と相場調整連動。'},
+    ],
+  },
+};
+
+const MARKET_LABELS = {
+  all: '全東証',
+  prime: 'プライム',
+  std: 'スタンダード',
+  growth: 'グロース',
+};
+const MARKET_BADGE = {
+  prm: { cls: 'prime', label: 'P' },
+  std: { cls: 'std',   label: 'S' },
+  grt: { cls: 'grt',   label: 'G' },
+  other:{ cls:'other', label: '他' },
+};
+const TAG_BADGE = {
+  news:  { cls:'sb-news',  label:'📰 材料あり' },
+  heat:  { cls:'sb-heat',  label:'🔥 過熱調整' },
+  momo:  { cls:'sb-momo',  label:'📈 モーメンタム' },
+  shide: { cls:'sb-shide', label:'🚨 仕手株的' },
+};
+
+function renderRankTable(type, market) {
+  const data = STOCKS[type][market] || [];
+  const isUp = type === 'up';
+  const showMarketCol = market === 'all';
+
+  let html = '<div class="table-wrap"><table><thead><tr>';
+  html += '<th>#</th>';
+  if (showMarketCol) html += '<th>市場</th>';
+  html += '<th>コード</th><th>銘柄名</th><th style="text-align:right">株価</th><th style="text-align:right">騰落率</th><th>分類</th><th>材料・背景</th>';
+  html += '</tr></thead><tbody>';
+
+  data.forEach(s => {
+    const rankCls = s.rank <= 3 ? 'top3' : '';
+    const mBadge = MARKET_BADGE[s.market] || MARKET_BADGE.other;
+    const tags = (s.tags || []).map(t => {
+      const tb = TAG_BADGE[t];
+      return tb ? `<span class="sb ${tb.cls}">${tb.label}</span>` : '';
+    }).join(' ');
+    const rateStr = (isUp ? '+' : '') + s.rate.toFixed(2) + '%';
+    const rateCls = isUp ? 'td-up' : 'td-down';
+
+    html += `<tr>
+      <td class="td-rank ${rankCls}">${s.rank}</td>
+      ${showMarketCol ? `<td><span class="sb sb-mkt ${mBadge.cls}">${mBadge.label}</span></td>` : ''}
+      <td class="td-code"><a href="https://kabutan.jp/stock/?code=${s.code}" target="_blank" rel="noopener" style="color:#94a3b8;text-decoration:none">${s.code}</a></td>
+      <td class="td-name"><a href="https://kabutan.jp/stock/?code=${s.code}" target="_blank" rel="noopener">${s.name}</a></td>
+      <td class="td-price">${s.price}円</td>
+      <td class="${rateCls}">${rateStr}</td>
+      <td><div class="stock-badges">${tags}</div></td>
+      <td class="td-reason">${s.reason}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function renderTab(type, market) {
+  const wrap = document.getElementById(type + '-table-wrap');
+  const note = document.getElementById(type + '-note');
+  wrap.innerHTML = renderRankTable(type, market);
+
+  const count = (STOCKS[type][market] || []).length;
+  if (count < 20) {
+    note.textContent = `※ ${MARKET_LABELS[market]}市場の上位${count}銘柄を表示（データソースの全上位20位に満たない場合があります）`;
+  } else {
+    note.textContent = '';
+  }
+
+  document.querySelectorAll(`.market-tab[data-type="${type}"]`).forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.market === market);
+  });
+}
+
+renderTab('up', 'all');
+renderTab('down', 'all');
+
+document.querySelectorAll('.market-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    renderTab(btn.dataset.type, btn.dataset.market);
+  });
+});
+
+// Calendar
+const REPORT_DATES = new Set(['2026-04-17', '2026-04-20', '2026-04-21']);
+const TODAY_STR = '2026-04-20';
+const todayDate = new Date('2026-04-20');
+let calYear = todayDate.getFullYear();
+let calMonth = todayDate.getMonth();
+
+function renderCalendar() {
+  const title = document.getElementById('cal-title');
+  const grid  = document.getElementById('cal-grid');
+  title.textContent = `${calYear}年${calMonth + 1}月`;
+
+  const dows = ['日','月','火','水','木','金','土'];
+  let html = dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const mm = String(calMonth + 1).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    const dateStr = `${calYear}-${mm}-${dd}`;
+    const dayOfWeek = new Date(calYear, calMonth, d).getDay();
+
+    let cls = 'cal-day in-month';
+    if (dayOfWeek === 0) cls += ' sun';
+    if (dayOfWeek === 6) cls += ' sat';
+    const isToday = dateStr === TODAY_STR;
+    const hasRep  = REPORT_DATES.has(dateStr) && !isToday;
+    if (isToday) cls += ' today';
+    if (hasRep)  cls += ' has-report';
+
+    const onclick = (isToday || hasRep) ? `onclick="openReport('${dateStr}')"` : '';
+    const t = (isToday || hasRep) ? `title="${dateStr} のレポートを開く"` : '';
+    html += `<div class="${cls}" ${onclick} ${t}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function openReport(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const filename = `daily_investment_report_${y}${m}${d}.html`;
+  if (dateStr === TODAY_STR) window.scrollTo({ top: 0, behavior: 'smooth' });
+  else window.location.href = filename;
+}
+
+document.getElementById('cal-prev').addEventListener('click', () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); });
+document.getElementById('cal-next').addEventListener('click', () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); });
+renderCalendar();
+
+// Scrollspy
+const sections = ['sec1','sec2','sec3','sec4','sec5'];
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const idx = sections.indexOf(entry.target.id);
+      if (idx >= 0 && navLinks[idx]) navLinks[idx].classList.add('active');
+    }
+  });
+}, { rootMargin: '-50% 0px -50% 0px' });
+sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+</script>
+</body>
+</html>

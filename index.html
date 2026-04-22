@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>日次投資レポート</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Sans", sans-serif; background:#f6f7f9; margin:0; padding:40px 20px; color:#0b1a2e; }
+  .wrap { max-width:720px; margin:0 auto; background:#fff; padding:40px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+  h1 { font-size:24px; margin:0 0 8px; }
+  .sub { color:#64748b; font-size:14px; margin-bottom:28px; }
+  ul { list-style:none; padding:0; margin:0; }
+  li { border-bottom:1px solid #e5e7eb; }
+  li:last-child { border-bottom:none; }
+  a { display:block; padding:14px 4px; color:#1e40af; text-decoration:none; font-weight:600; font-size:15px; }
+  a:hover { background:#f1f5f9; padding-left:10px; transition:all 0.15s; }
+  .badge { display:inline-block; background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle; }
+  .latest { background:#fef3c7; color:#92400e; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📊 日次投資レポート</h1>
+  <p class="sub">株探「材料タブ」・Yahoo!ファイナンス実データに基づく日次レポートアーカイブ</p>
+  <ul id="list"></ul>
+</div>
+<script>
+const reports = [
+  { date: '2026-04-21', label: '2026年4月21日（火）' },
+  { date: '2026-04-20', label: '2026年4月20日（月）' },
+  { date: '2026-04-17', label: '2026年4月17日（金）' },
+];
+const list = document.getElementById('list');
+reports.forEach((r, i) => {
+  const li = document.createElement('li');
+  const file = `daily_investment_report_${r.date.replace(/-/g,'')}.html`;
+  const latest = i === 0 ? '<span class="badge latest">最新</span>' : '';
+  li.innerHTML = `<a href="${file}">${r.label}${latest}</a>`;
+  list.appendChild(li);
+});
+</script>
+</body>
+</html>
