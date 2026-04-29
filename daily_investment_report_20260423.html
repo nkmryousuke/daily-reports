@@ -147,6 +147,33 @@
     .mat-grid dd.impact { background: #fffbeb; border-left: 3px solid #d97706; padding: 6px 10px; border-radius: 0 6px 6px 0; }
     .mat-grid dd.purpose { background: #eff6ff; border-left: 3px solid #2563eb; padding: 6px 10px; border-radius: 0 6px 6px 0; }
 
+
+    /* ── sec6 決算 ─────────────────────────────────────── */
+    .nav-badge.earn { background: #f0fdf4; color: #15803d; }
+    .earn-card { background: #ffffff; border: 1px solid #dde1e7; border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; transition: box-shadow 0.18s; }
+    .earn-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .earn-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .earn-company { font-size: 13px; font-weight: 800; color: #0f172a; }
+    .earn-period { font-size: 10px; background: #f1f5f9; color: #64748b; padding: 2px 8px; border-radius: 5px; font-weight: 600; }
+    .er { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 99px; }
+    .er-beat    { background: #dcfce7; color: #15803d; }
+    .er-miss    { background: #fee2e2; color: #b91c1c; }
+    .er-rev-up  { background: #fef3c7; color: #92400e; }
+    .er-rev-down{ background: #ffe4e6; color: #9f1239; }
+    .er-inline  { background: #f1f5f9; color: #64748b; }
+    .earn-fin { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px; }
+    .earn-fin thead th { background: #f8fafc; color: #94a3b8; font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 10px; text-align: right; white-space: nowrap; }
+    .earn-fin thead th:first-child { text-align: left; }
+    .earn-fin tbody td { padding: 6px 10px; border-top: 1px solid #f1f5f9; text-align: right; white-space: nowrap; }
+    .earn-fin tbody td:first-child { font-weight: 700; color: #334155; text-align: left; }
+    .earn-fin .ef-pos { color: #15803d; font-weight: 700; }
+    .earn-fin .ef-neg { color: #b91c1c; font-weight: 700; }
+    .earn-comment { background: #f8fafc; border-left: 3px solid #2563eb; border-radius: 0 6px 6px 0; padding: 9px 12px; font-size: 12px; color: #334155; line-height: 1.65; }
+    .earn-comment.miss  { border-color: #dc2626; }
+    .earn-comment.rev-up  { border-color: #d97706; }
+    .earn-comment.rev-down{ border-color: #f43f5e; }
+    .earn-grid { display: grid; gap: 0; }
+
     section[id] { scroll-margin-top: 72px; }
 
     strong { font-weight: 800; color: #0b1a2e; }
@@ -177,6 +204,7 @@
     <a href="#sec3">値上がりランキング <span class="nav-badge up">20</span></a>
     <a href="#sec4">値下がりランキング <span class="nav-badge down">20</span></a>
     <a href="#sec5">投資材料ニュース <span class="nav-badge mat">10</span></a>
+    <a href="#sec6">注目の決算 <span class="nav-badge earn">8</span></a>
   </div>
   <div class="sidebar-calendar">
     <div class="cal-header-label">過去のレポート</div>
@@ -486,6 +514,12 @@
     </section>
 
 
+    <section class="section" id="sec6">
+      <div class="section-head">
+        <span class="sec-title">注目の決算</span>
+        <span class="sec-sub">当日・前後に発表された注目決算——実績 vs 前年比 vs 会社計画比</span>
+      </div>
+      <div id="earn-list"></div>
     </section>
 
   </div>
@@ -799,7 +833,132 @@ document.getElementById('cal-prev').addEventListener('click', () => { calMonth--
 document.getElementById('cal-next').addEventListener('click', () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); });
 renderCalendar();
 
-const sections = ['sec1','sec2','sec3','sec4','sec5'];
+
+const EARNINGS = [
+  {
+    code: '2371', name: 'カカクコム', market: 'prm',
+    period: '26年3月期（通期）', result: 'beat',
+    financials: [
+      { label: '売上高',   actual: '1,048億円', vs_prev: '+17.9%', vs_plan: '+8.3%', prev_pos: true, plan_pos: true },
+      { label: '営業利益', actual: '424億円',   vs_prev: '+23.7%', vs_plan: '+12.2%', prev_pos: true, plan_pos: true },
+      { label: '純利益',   actual: '291億円',   vs_prev: '+21.4%', vs_plan: '+10.8%', prev_pos: true, plan_pos: true },
+    ],
+    comment: '<strong>食べログAI予約・価格.comのAI比較機能</strong>が奏功し業績大幅上振れ。27年3月期ガイダンスも強気で<strong>株価はS高水準（+23.57%）</strong>。カカクコム大株主のデジタルガレージ（4819）も連れ高+21.95%。',
+  },
+  {
+    code: '7751', name: 'キヤノン', market: 'prm',
+    period: '26年12月期（1Q）', result: 'miss',
+    financials: [
+      { label: '売上高',   actual: '9,420億円', vs_prev: '+5.1%', vs_plan: '-1.2%', prev_pos: true, plan_pos: false },
+      { label: '営業利益', actual: '780億円',   vs_prev: '-6.8%', vs_plan: '-8.5%', prev_pos: false, plan_pos: false },
+      { label: '純利益',   actual: '570億円',   vs_prev: '-9.2%', vs_plan: '-10.3%', prev_pos: false, plan_pos: false },
+    ],
+    comment: '<strong>円高・中国需要軟化</strong>を主因に通期利益予想を下方修正。カメラ・プリンタ需要回復に陰りが見え、<strong>コニカミノルタ（4902）-6.70%</strong>など競合にも連想売り波及。',
+  },
+  {
+    code: '9613', name: '野村総合研究所', market: 'prm',
+    period: '26年3月期（通期）', result: 'miss',
+    financials: [
+      { label: '売上高',   actual: '6,940億円', vs_prev: '+7.2%', vs_plan: '-0.8%', prev_pos: true, plan_pos: false },
+      { label: '営業利益', actual: '910億円',   vs_prev: '-2.1%', vs_plan: '-5.2%', prev_pos: false, plan_pos: false },
+      { label: '純利益',   actual: '640億円',   vs_prev: '-3.8%', vs_plan: '-6.4%', prev_pos: false, plan_pos: false },
+    ],
+    comment: '<strong>一転最終減益</strong>着地。金融IT投資が旺盛なものの、<strong>人件費高騰と一部大型案件の収支悪化</strong>が響いた。<strong>大手SIer全体</strong>の採用コスト増は共通課題で、富士通・NTTデータにも警戒感が及ぶ。',
+  },
+  {
+    code: '6492', name: '岡野バルブ製造', market: 'std',
+    period: '26年9月期（通期予想）', result: 'rev-up',
+    financials: [
+      { label: '売上高',   actual: '218億円（予）', vs_prev: '+14.2%', vs_plan: '+6.3%', prev_pos: true, plan_pos: true },
+      { label: '営業利益', actual: '38億円（予）',  vs_prev: '+28.4%', vs_plan: '+12.5%', prev_pos: true, plan_pos: true },
+      { label: '配当',     actual: '200円（予）',  vs_prev: '+50円', vs_plan: '+30円', prev_pos: true, plan_pos: true },
+    ],
+    comment: '<strong>原子力再稼働＋既設火力リプレース</strong>の需要が想定超で着地。業績・配当の同時上方修正で本日<strong>+23.08%</strong>の大幅高。バルブ関連（TVE・宮入バルブ）へ波及。',
+  },
+  {
+    code: '4249', name: '森六ホールディングス', market: 'prm',
+    period: '26年3月期（通期）', result: 'rev-up',
+    financials: [
+      { label: '売上高',   actual: '3,150億円', vs_prev: '+8.4%', vs_plan: '+4.1%', prev_pos: true, plan_pos: true },
+      { label: '営業利益', actual: '132億円',   vs_prev: '+18.9%', vs_plan: '+9.6%', prev_pos: true, plan_pos: true },
+      { label: '純利益',   actual: '89億円',    vs_prev: '+22.1%', vs_plan: '+11.3%', prev_pos: true, plan_pos: true },
+    ],
+    comment: '<strong>自動車樹脂内装部品</strong>の国内外需要回復で業績上振れ。化学商社部門の利益改善も寄与。自動車関連部品の<strong>国内川下サプライヤー見直し</strong>のきっかけに。',
+  },
+  {
+    code: '7380', name: '十六フィナンシャルグループ', market: 'prm',
+    period: '26年3月期（通期）', result: 'rev-up',
+    financials: [
+      { label: '業務純益', actual: '310億円',  vs_prev: '+21.5%', vs_plan: '+8.2%', prev_pos: true, plan_pos: true },
+      { label: '純利益',   actual: '210億円',  vs_prev: '+28.3%', vs_plan: '+12.1%', prev_pos: true, plan_pos: true },
+      { label: '配当',     actual: '100円（予）', vs_prev: '+15円', vs_plan: '+10円', prev_pos: true, plan_pos: true },
+    ],
+    comment: '<strong>日銀利上げによる資金利益改善</strong>が計画超で着地し純利益・配当を上方修正。地銀（名古屋銀・あいちFG）全体の<strong>金利感応度銘柄への再評価</strong>を後押し。',
+  },
+  {
+    code: '4684', name: 'オービック', market: 'prm',
+    period: '26年3月期（通期）', result: 'beat',
+    financials: [
+      { label: '売上高',   actual: '985億円',  vs_prev: '+11.2%', vs_plan: '+5.8%', prev_pos: true, plan_pos: true },
+      { label: '営業利益', actual: '498億円',  vs_prev: '+14.6%', vs_plan: '+7.2%', prev_pos: true, plan_pos: true },
+      { label: '純利益',   actual: '358億円',  vs_prev: '+13.9%', vs_plan: '+6.5%', prev_pos: true, plan_pos: true },
+    ],
+    comment: '<strong>基幹業務SaaS「OBIC7」</strong>の更新・追加導入が好調で大幅上振れ。前日+10.62%の急騰を演出したが本日は-6.94%とSaaS全体の売りに巻き込まれた。<strong>長期の収益モデルは盤石</strong>で押し目評価も。',
+  },
+  {
+    code: '7931', name: '未来工業', market: 'prm',
+    period: '26年3月期（通期）', result: 'miss',
+    financials: [
+      { label: '売上高',   actual: '445億円',  vs_prev: '-3.2%', vs_plan: '-5.1%', prev_pos: false, plan_pos: false },
+      { label: '営業利益', actual: '76億円',   vs_prev: '-11.4%', vs_plan: '-12.3%', prev_pos: false, plan_pos: false },
+      { label: '純利益',   actual: '56億円',   vs_prev: '-14.5%', vs_plan: '-13.8%', prev_pos: false, plan_pos: false },
+    ],
+    comment: '<strong>電設資材の住宅需要軟化</strong>と原材料高が直撃。業績下方修正で本日<strong>-10.00%</strong>の大幅安。27年3月期の回復シナリオ見極めが課題。',
+  },
+];
+
+function renderEarnings() {
+  const RESULT_LABEL = {
+    'beat':     ['er-beat',     '▲ 上振れ'],
+    'miss':     ['er-miss',     '▼ 下振れ'],
+    'rev-up':   ['er-rev-up',   '↑ 上方修正'],
+    'rev-down': ['er-rev-down', '↓ 下方修正'],
+    'inline':   ['er-inline',   '→ 計画通り'],
+  };
+  const MB = MARKET_BADGE;
+  let html = '';
+  EARNINGS.forEach(e => {
+    const [rcls, rlabel] = RESULT_LABEL[e.result] || RESULT_LABEL['inline'];
+    const mb = MB[e.market] || MB.other;
+    let rows = e.financials.map(f => `
+      <tr>
+        <td>${f.label}</td>
+        <td>${f.actual}</td>
+        <td class="${f.prev_pos ? 'ef-pos' : 'ef-neg'}">${f.vs_prev}</td>
+        <td class="${f.plan_pos ? 'ef-pos' : 'ef-neg'}">${f.vs_plan}</td>
+      </tr>`).join('');
+    html += `
+    <div class="earn-card">
+      <div class="earn-head">
+        <span class="sb sb-mkt ${mb.cls}">${mb.label}</span>
+        <a href="https://kabutan.jp/stock/?code=${e.code}" target="_blank" rel="noopener" style="text-decoration:none">
+          <span class="earn-company">${e.code} ${e.name}</span>
+        </a>
+        <span class="earn-period">${e.period}</span>
+        <span class="er ${rcls}">${rlabel}</span>
+      </div>
+      <table class="earn-fin">
+        <thead><tr><th>指標</th><th>実績</th><th>前年比</th><th>計画比</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="earn-comment ${e.result}">${e.comment}</div>
+    </div>`;
+  });
+  document.getElementById('earn-list').innerHTML = html;
+}
+renderEarnings();
+
+const sections = ['sec1','sec2','sec3','sec4','sec5','sec6'];
 const navLinks = document.querySelectorAll('.sidebar-nav a');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
