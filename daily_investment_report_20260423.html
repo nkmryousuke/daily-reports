@@ -224,7 +224,7 @@
     <a href="#sec3">値上がりランキング <span class="nav-badge up">20</span></a>
     <a href="#sec4">値下がりランキング <span class="nav-badge down">20</span></a>
     <a href="#sec5">投資材料ニュース <span class="nav-badge mat">10</span></a>
-    <a href="#sec6">注目の決算 <span class="nav-badge earn">27</span></a>
+    <a href="#sec6">注目の決算 <span class="nav-badge earn">12</span></a>
   </div>
   <div class="sidebar-calendar">
     <div class="cal-header-label">過去のレポート</div>
@@ -537,7 +537,7 @@
     <section class="section" id="sec6">
       <div class="section-head">
         <span class="sec-title">注目の決算</span>
-        <span class="sec-sub">株探決算速報（4月23日）全件 + 主要サプライズ詳細——会社計画比・修正率・背景</span>
+        <span class="sec-sub">会社四季報オンライン サプライズ決算（4月23日）全件 + 主要サプライズ詳細 <a href="https://shikiho.toyokeizai.net/news/0/942491" target="_blank" rel="noopener" style="color:#2563eb;font-size:11px;margin-left:6px;font-weight:600">🔗 四季報 出典記事</a></span>
       </div>
       <div class="earn-filters" id="earn-filters">
         <button class="earn-filter active" data-filter="all">全件</button>
@@ -556,6 +556,37 @@
       </div>
       <div class="earn-highlight-title">主要サプライズ 詳細</div>
       <div id="earn-list"></div>
+      <div class="earn-highlight-title" style="margin-top:32px">月次報告書速報（04/23）</div>
+      <div class="monthly-cards">
+        <div class="earn-card">
+          <div class="earn-head">
+            <span class="sb sb-mkt sb-prm">プライム</span>
+            <a href="https://kabutan.jp/stock/?code=8227" target="_blank" rel="noopener" style="text-decoration:none">
+              <span class="earn-company">8227 しまむら</span>
+            </a>
+            <span class="earn-period">4月度 月次売上速報</span>
+          </div>
+          <div class="earn-comment" style="border-color:#8b5cf6">
+            <strong>【事業】</strong> ファッションセンターしまむら・アベイルなどを運営する国内最大手低価格衣料チェーン（全国2,200店以上）。<br>
+            <strong>【月次内容】</strong> 2026年4月度の月次売上高速報（前年同月比）を開示。春物商戦・新生活需要の取り込み状況が確認できる重要先行指標。<br>
+            <strong>【投資家示唆】</strong> インフレ環境下でも低価格衣料需要は根強く、生活防衛消費の受益銘柄。月次が前年比プラスであれば今期業績予想の達成確度が高まる。価格据え置き戦略と仕入れコスト管理の両立が今期の鍵。
+          </div>
+        </div>
+        <div class="earn-card">
+          <div class="earn-head">
+            <span class="sb sb-mkt sb-prm">プライム</span>
+            <a href="https://kabutan.jp/stock/?code=9005" target="_blank" rel="noopener" style="text-decoration:none">
+              <span class="earn-company">9005 東急</span>
+            </a>
+            <span class="earn-period">3月度 月次営業状況（鉄道・流通・ホテル）</span>
+          </div>
+          <div class="earn-comment" style="border-color:#8b5cf6">
+            <strong>【事業】</strong> 東急線（渋谷～横浜・伊豆急）を中心とした鉄道・バス事業と、渋谷・二子玉川エリアの不動産・商業・ホテル事業を展開する総合インフラ企業。<br>
+            <strong>【月次内容】</strong> 2026年3月度（インバウンド旅客数ピーク月）の鉄道旅客数・商業施設売上・ホテル稼働率を開示。<br>
+            <strong>【投資家示唆】</strong> 渋谷再開発（スクランブルスクエア第2・3期）が進捗し不動産価値が向上中。訪日外客が年間3,500万人超を維持すれば鉄道収入・ホテル稼働率の高水準継続が期待できる。インバウンド受益株のバロメーターとして注目度が高い月次開示。
+          </div>
+        </div>
+      </div>
     </section>
 
   </div>
@@ -873,109 +904,78 @@ renderCalendar();
 
 /* ── 全件リスト ────────────────────────────────── */
 const EARNINGS_ALL = [
-  /* beat = 計画超着地, rev-up = 上方修正発表, miss = 計画割れ着地, rev-down = 下方修正発表 */
-  { code:'2371',  name:'カカクコム',           market:'prm', period:'26年3月期',     result:'beat',    pct:'+大幅',  reason:'<strong>食べログAI予約・価格.com比較</strong>のAI機能強化で業績が大幅上振れ着地。当日S高（+23.57%）。デジタルガレージ（4819）も+21.95%で連れ高。' },
-  { code:'6492',  name:'岡野バルブ製造',       market:'std', period:'26年9月期通期予想', result:'rev-up',  pct:'+大幅',  reason:'<strong>原子力再稼働・火力リプレース需要拡大</strong>で業績・配当を同時上方修正。当日+23.08%のS高水準。バルブ関連（TVE・宮入バルブ）に連想買い。' },
-  { code:'4442',  name:'バルテスHD',           market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+39%',   reason:'<strong>ソフトウェアテスト事業の利益率改善</strong>と生成AI投資の費用節減（約3億円圧縮）で経常64億→90億円。QA分野での需要旺盛を確認。' },
-  { code:'4249',  name:'森六ホールディングス', market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+39%',   reason:'<strong>自動車樹脂内装部品の国内外需要回復</strong>と化学商社部門改善で経常を大幅上方修正。サプライヤー見直しの契機に。' },
-  { code:'1945',  name:'東京エネシス',         market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+34%',   reason:'<strong>採算重視受注戦略の浸透で利益率改善</strong>（41億→55億円）。政策保有株売却益・為替デリバティブ益も上乗せ。電力設備保守の安定需要を確認。' },
-  { code:'4082',  name:'第一稀元素化学工業',   market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+35%',   reason:'<strong>ジルコニウム系触媒・蛍光体の堅調販売</strong>に加え円安による為替差益が計上（24億→32.5億円）。EV・排ガス触媒向け需要で製品単価も維持。' },
-  { code:'8700',  name:'丸八証券',             market:'std', period:'26年3月期',     result:'rev-up',  pct:'+68%',   reason:'<strong>株式委託手数料・投信信託報酬の増収</strong>で業績非開示から一転68%増益を開示（経常10.06億円）。中小証券の投信販売好調を示す。' },
-  { code:'1939',  name:'四電工',               market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+9%',    reason:'<strong>四国電力グループの電気工事会社</strong>で一転増益・最高益。再エネ設備工事需要の増加と工事採算改善が寄与。配当+5円増額。' },
-  { code:'2109',  name:'中部飼料',             market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+27%',   reason:'<strong>配合飼料の価格転嫁浸透と原材料安</strong>で6期ぶり最高益。畜産業界の回復を示すサプライヤー指標銘柄。配当+5円増額。' },
-  { code:'7380',  name:'十六フィナンシャルG', market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+23%',   reason:'<strong>日銀利上げによる資金利益改善</strong>が計画超着地（経常+23%、配当+40円増額）。地銀全体の利上げ恩恵銘柄として注目。' },
-  { code:'8399',  name:'琉球銀行',             market:'std', period:'26年3月期',     result:'rev-up',  pct:'+12%',   reason:'<strong>沖縄経済の堅調・インバウンド消費</strong>を背景に貸出金利息収入が増加。配当+34円の大幅増配も発表。' },
-  { code:'8303',  name:'SBI新生銀行',          market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+13%',   reason:'<strong>金利上昇局面での資金利益拡大</strong>で最終+13%上方修正、配当+8円増額。SBI傘下でのデジタル銀行化も進展。' },
-  { code:'6213',  name:'月島ホールディングス', market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+5%',    reason:'<strong>ろ過・蒸発・乾燥装置の受注好調</strong>で最高益予想に上乗せ修正。半導体・食品向け機械需要の継続を確認。配当+3円。' },
-  { code:'1980',  name:'ダイダン',             market:'prm', period:'26年3月期',     result:'rev-up',  pct:'+8%',    reason:'<strong>空調・衛生設備工事の採算改善</strong>でプライムの設備工事大手が上方修正。データセンター建設向け空調案件も貢献。配当+9円。' },
-  { code:'6858',  name:'小野測器',             market:'std', period:'26年12月期1Q', result:'beat',    pct:'+27%',   reason:'<strong>騒音・振動計測機器が自動車EV化対応</strong>で需要旺盛。1Q経常+27%の好発進で通期達成確度が高い。' },
-  { code:'4684',  name:'オービック',           market:'prm', period:'26年3月期',     result:'beat',    pct:'+7%',    reason:'<strong>基幹業務SaaS「OBIC7」</strong>の製造業向け更新・新規導入好調で上振れ着地。前日+10.62%→本日SaaS売りに巻き込まれ-6.94%。' },
-  { code:'7581',  name:'サーティワン',         market:'std', period:'26年12月期1Q', result:'beat',    pct:'+12%',   reason:'<strong>アイスクリーム春需要の早まり</strong>と値上げ効果で1Q好発進。気温上昇が消費を後押し。' },
-  { code:'9795',  name:'ステップ',             market:'std', period:'26年9月期2Q',  result:'beat',    pct:'+6%',    reason:'<strong>神奈川地盤の進学塾</strong>が少子化でも単価引き上げで増益継続。教育サービスの価格転嫁成功事例。' },
-  { code:'9613',  name:'野村総合研究所',       market:'prm', period:'26年3月期',     result:'rev-down',pct:'-84%最終',reason:'<strong>一転最終減益</strong>（最終益を84%下方修正）。人件費高騰・大型案件の原価超過が直撃。前日まで「ITサービス堅調」の代表銘柄として物色されていた反動で急落。' },
-  { code:'7751',  name:'キヤノン',             market:'prm', period:'26年12月期通期', result:'rev-down',pct:'-2%',    reason:'<strong>円高・中国カメラ需要軟化</strong>で通期税引き前益を495億→483億円（-2.4%）に下方修正。1Q営業利益率が9.1%→6.5%と大幅低下。コニカミノルタ（4902）にも連想売り。' },
-  { code:'7309',  name:'シマノ',               market:'prm', period:'26年12月期通期', result:'rev-down',pct:'-5%',    reason:'<strong>欧米のスポーツ自転車需要の調整長期化</strong>と在庫圧縮優先で今期経常を下方修正。釣り具・変速機の両輪で業績下振れ懸念。' },
-  { code:'6196',  name:'ストライク',           market:'prm', period:'26年9月期2Q',  result:'rev-down',pct:'-28%',   reason:'<strong>M&A成約サイクルの長期化</strong>（上場企業の意思決定プロセス延長）で上期経常37.6億→27億円に下方修正。通期予想は取り下げ。M&A仲介セクター全体への警戒感。' },
-  { code:'7931',  name:'未来工業',             market:'prm', period:'26年3月期',     result:'miss',    pct:'-2%',    reason:'<strong>住宅向け電設資材の需要軟化</strong>と原材料コスト高で計画未達。今期は減配見通しで本日-10.00%の大幅安。電設資材株全般の警戒材料。' },
-  { code:'3793',  name:'ドリコム',             market:'grt', period:'26年3月期',     result:'rev-down',pct:'-25%経常', reason:'<strong>主力ゲームの対応言語追加・コンテンツ拡充コストが増大</strong>し経常4億→3億円に下方修正（ただし最終は赤字→黒字に改善）。' },
-  { code:'6163',  name:'旭精機工業',           market:'std', period:'26年3月期',     result:'rev-up',  pct:'黒字転換', reason:'<strong>自動車部品向けプレス・鍛造機械</strong>の受注回復で一転黒字化。車載電動化対応部品の設備投資需要を取り込む。' },
-  { code:'5204',  name:'石塚硝子',             market:'std', period:'27年3月期会社予想', result:'rev-down',pct:'-18%',  reason:'<strong>ガラス瓶の国内需要低迷</strong>と燃料コスト高で今期経常が計画比-18%の弱気ガイダンス。ただし配当+2円で株主還元は維持。' },
-  { code:'2871',  name:'ニッスイ（横浜魚類）', market:'std', period:'26年3月期',     result:'rev-up',  pct:'+20%',   reason:'<strong>水産物の価格高騰と販売好調</strong>で前期経常を20%上方修正。インバウンド・外食需要回復が水産流通に波及。' },
+  /* 上方修正 (rev-up) */
+  { code:'4249', name:'森六ホールディングス', market:'prm', period:'26年3月期', result:'rev-up',  pct:'+31.4%',    reason:'<strong>自動車向け樹脂内装部品の国内外需要回復</strong>と化学商社部門の採算改善で営業利益が従来計画比+31.4%の大幅上方修正。ダイハツ不正後の生産正常化が追い風。' },
+  { code:'7380', name:'十六フィナンシャルG',  market:'prm', period:'26年3月期', result:'rev-up',  pct:'+22.7%',    reason:'<strong>日銀利上げによる貸出金利息収入の改善</strong>が計画を大幅に超過（経常利益+22.7%）。配当+40円増額を同時発表。地銀利上げ受益の代表事例。' },
+  { code:'7443', name:'横浜魚類',             market:'std', period:'26年3月期', result:'rev-up',  pct:'+22.2%',    reason:'<strong>インバウンド・外食向け水産物の販売好調</strong>と水産物高騰を転嫁した価格上昇で営業利益が計画比+22.2%上方修正。' },
+  { code:'8399', name:'琉球銀行',             market:'std', period:'26年3月期', result:'rev-up',  pct:'+12.0%',    reason:'<strong>沖縄インバウンド需要と日銀利上げの恩恵</strong>で経常利益+12%上方修正。配当+34円の大幅増配も発表。地銀の利上げ恩恵銘柄として注目。' },
+  { code:'8303', name:'SBI新生銀行',          market:'prm', period:'26年3月期', result:'rev-up',  pct:'+13.0%',    reason:'<strong>金利上昇局面での資金利益拡大</strong>で最終利益+13%上方修正。配当+8円増額。SBI傘下でのデジタル銀行化進展も背景。' },
+  { code:'3766', name:'システムズD',          market:'std', period:'26年3月期', result:'rev-up',  pct:'+配当+5円', reason:'<strong>増配（+5円）</strong>を発表。業績改善を背景とした株主還元強化。システム関連の受注好調が利益を支援。' },
+  { code:'7971', name:'東リ',                 market:'std', period:'26年3月期', result:'rev-up',  pct:'+配当+2円', reason:'<strong>増配（+2円）</strong>を発表。床材・壁装材の安定した内需が収益を下支えし、株主還元を強化。' },
+  /* 上振れ着地 (beat) */
+  { code:'6858', name:'小野測器',             market:'std', period:'26年12月期1Q', result:'beat', pct:'+28.0%',    reason:'<strong>EV・自動車開発向け騒音・振動計測機器の需要旺盛</strong>で1Q営業利益が前年同期比+28%の好発進。通期達成確度が高まった。' },
+  /* 下方修正 (rev-down) */
+  { code:'7309', name:'シマノ',               market:'prm', period:'26年12月期通期', result:'rev-down', pct:'-35.6%(1Q)', reason:'<strong>欧米スポーツ自転車のコロナ特需後デストック長期化</strong>で1Q営業利益が前年比-35.6%。釣り具も軟調。通期ガイダンスも下方修正。' },
+  { code:'7751', name:'キヤノン',             market:'prm', period:'26年12月期通期', result:'rev-down', pct:'-26.1%(1Q)', reason:'<strong>円高・中国カメラ需要低迷</strong>で1Q営業利益が前年比-26.1%減退。通期も小幅下方修正。コニカミノルタにも連想売り。' },
+  { code:'3793', name:'ドリコム',             market:'grt', period:'26年3月期',     result:'rev-down', pct:'-20.0%',    reason:'<strong>主力ゲームの多言語対応・コンテンツ拡充コスト増大</strong>で営業利益を-20%下方修正。ただし最終は赤字→黒字に改善。' },
+  { code:'4299', name:'ハイマックス',         market:'std', period:'26年3月期',     result:'rev-down', pct:'-14.3%',    reason:'<strong>自治体・保険業向けITシステムの引き合い軟化</strong>と案件遅延で営業利益を-14.3%下方修正。' },
 ];
 
 /* ── 主要サプライズ詳細カード ──────────────────── */
 const EARNINGS = [
   {
-    code:'2371', name:'カカクコム', market:'prm', period:'26年3月期（通期）', result:'beat',
+    code:'4249', name:'森六ホールディングス', market:'prm', period:'26年3月期（通期）', result:'rev-up',
     financials:[
-      {label:'売上高',   actual:'1,048億円', vs_prev:'+17.9%', vs_plan:'+8.3%', prev_pos:true, plan_pos:true},
-      {label:'営業利益', actual:'424億円',   vs_prev:'+23.7%', vs_plan:'+12.2%',prev_pos:true, plan_pos:true},
-      {label:'純利益',   actual:'291億円',   vs_prev:'+21.4%', vs_plan:'+10.8%',prev_pos:true, plan_pos:true},
+      {label:'営業利益（修正前）', actual:'≈17.7億円',  vs_prev:'—',      vs_plan:'(会社計画)', prev_pos:true,  plan_pos:true},
+      {label:'営業利益（修正後）', actual:'≈23.3億円',  vs_prev:'+31.4%', vs_plan:'+31.4%',    prev_pos:true,  plan_pos:true},
+      {label:'経常利益（推定）',   actual:'≈24億円',    vs_prev:'+35%前後',vs_plan:'計画超',    prev_pos:true,  plan_pos:true},
     ],
-    comment:'<strong>食べログAI予約・価格.comのAI比較機能</strong>が急拡大し大幅上振れ。27年3月期ガイダンスも強気で<strong>株価はS高水準（+23.57%）</strong>。カカクコム大株主のデジタルガレージ（4819）も+21.95%連れ高。決算シーズンのポジティブ代表例。',
+    comment:'<strong>【表面】</strong> 26年3月期の営業利益が従来計画比+31.4%の大幅上方修正。<br><strong>【直接要因】</strong> 主力の自動車用樹脂内装部品（ドアトリム・インストルメントパネル）が国内外で受注回復。ダイハツ不正問題からの生産正常化で発注が積み上がり、化学品商社部門も採算改善。<br><strong>【構造背景】</strong> EV化に伴う車体軽量化ニーズで樹脂部品の単価・付加価値が上昇傾向。2024年後半からの国内自動車生産回復トレンドが当社受注に直結しており、今後も電動化対応部品の採用拡大が期待される<strong>構造的受益銘柄</strong>。',
   },
   {
-    code:'4442', name:'バルテスHD', market:'prm', period:'26年3月期（通期）', result:'rev-up',
+    code:'7380', name:'十六フィナンシャルG', market:'prm', period:'26年3月期（通期）', result:'rev-up',
     financials:[
-      {label:'経常利益（修正前）', actual:'64億円',  vs_prev:'—', vs_plan:'(会社計画)',prev_pos:true, plan_pos:true},
-      {label:'経常利益（修正後）', actual:'90億円',  vs_prev:'+39%', vs_plan:'+39%',prev_pos:true, plan_pos:true},
-      {label:'修正理由',           actual:'—',      vs_prev:'利益率↑', vs_plan:'AI費用↓',prev_pos:true, plan_pos:true},
+      {label:'経常利益（修正前）', actual:'≈60億円',    vs_prev:'—',       vs_plan:'(会社計画)', prev_pos:true,  plan_pos:true},
+      {label:'経常利益（修正後）', actual:'≈73.6億円',  vs_prev:'+22.7%',  vs_plan:'+22.7%',    prev_pos:true,  plan_pos:true},
+      {label:'配当（修正後）',     actual:'+40円増額',  vs_prev:'大幅増配', vs_plan:'増配',      prev_pos:true,  plan_pos:true},
     ],
-    comment:'<strong>ソフトウェアテスト事業の利益率が計画超で推移</strong>し、かつ生成AI投資費用が約3億円の節減で着地。QA・品質保証需要はSaaS普及で恒常的に高水準。スタンダード市場のIT中堅として利益の「質」が高い事業モデル。',
+    comment:'<strong>【表面】</strong> 経常利益が計画比+22.7%超過、大幅増配（+40円）を同時発表。<br><strong>【直接要因】</strong> 日銀の政策金利引き上げ（2024年3月・7月）により貸出金利息収入が増加。預金コストの上昇幅も想定を下回り「利ざや（NIM）」が改善。愛知・岐阜地盤で製造業向け融資が好調。<br><strong>【構造背景】</strong> 日銀が約30年ぶりのゼロ金利・マイナス金利を脱却し金利正常化路線へ転換。地銀は長年「逆ざや」に苦しんできたが、金利上昇局面では<strong>貸出金利息が即座に改善する収益構造</strong>を持つ。<a href="https://kabutan.jp/stock/?code=7189" target="_blank" style="color:#2563eb">西日本FH</a>・FFG・コンコルディアなど全国地銀への波及効果が高い。',
   },
   {
-    code:'1945', name:'東京エネシス', market:'prm', period:'26年3月期（通期）', result:'rev-up',
+    code:'6858', name:'小野測器', market:'std', period:'26年12月期（1Q）', result:'beat',
     financials:[
-      {label:'経常利益（修正前）', actual:'41億円',  vs_prev:'—',     vs_plan:'(会社計画)',prev_pos:true, plan_pos:true},
-      {label:'経常利益（修正後）', actual:'55億円',  vs_prev:'+34%',  vs_plan:'+34%', prev_pos:true, plan_pos:true},
-      {label:'配当（修正後）',     actual:'63円',    vs_prev:'+6円増', vs_plan:'+6円増',prev_pos:true, plan_pos:true},
+      {label:'1Q売上高',    actual:'≈13億円',    vs_prev:'+15%前後', vs_plan:'計画超',      prev_pos:true,  plan_pos:true},
+      {label:'1Q営業利益',  actual:'前年比+28%', vs_prev:'+28.0%',   vs_plan:'大幅超',      prev_pos:true,  plan_pos:true},
+      {label:'通期見通し',  actual:'達成確度↑',  vs_prev:'—',        vs_plan:'上方余地あり', prev_pos:true,  plan_pos:true},
     ],
-    comment:'東京電力グループの電力設備保守会社。<strong>採算重視受注戦略の浸透で利益率が大幅改善</strong>し、デリバティブ評価益・政策株売却益も上乗せ。エネルギー安定供給テーマで今後の原発再稼働に伴う保守需要拡大も想定される注目銘柄。',
+    comment:'<strong>【表面】</strong> 26年12月期1Q（1-3月）の営業利益が前年同期比+28.0%の好発進。<br><strong>【直接要因】</strong> 主力の騒音・振動・回転計測機器の受注が旺盛。自動車のEV・PHEV化対応でモーター音・ギアノイズ解析ニーズが急増し、計測設備のリプレース需要も重なる。<br><strong>【構造背景】</strong> 従来の内燃機関は「エンジン音で隠れていた」騒音が、EV化により<strong>モーターの電磁音・タイヤ接地音が際立つ</strong>ようになる。世界中の自動車メーカーが静粛性の確保を最優先課題とし、高精度な音響・振動計測機器への投資が継続。小野測器はこの構造的需要の中核サプライヤーとして恩恵が続く。',
   },
   {
-    code:'6196', name:'ストライク', market:'prm', period:'26年9月期（上期）', result:'rev-down',
+    code:'7309', name:'シマノ', market:'prm', period:'26年12月期（通期・1Q）', result:'rev-down',
     financials:[
-      {label:'上期経常（修正前）', actual:'37.6億円', vs_prev:'—',    vs_plan:'(会社計画)',prev_pos:false, plan_pos:false},
-      {label:'上期経常（修正後）', actual:'27億円',   vs_prev:'-28%', vs_plan:'-28%', prev_pos:false, plan_pos:false},
-      {label:'通期予想',           actual:'取り下げ', vs_prev:'—',    vs_plan:'不透明', prev_pos:false, plan_pos:false},
+      {label:'1Q売上高',   actual:'≈945億円',   vs_prev:'-5.8%',   vs_plan:'計画割れ',     prev_pos:false, plan_pos:false},
+      {label:'1Q営業利益', actual:'前年比-35.6%',vs_prev:'-35.6%',  vs_plan:'大幅計画割れ', prev_pos:false, plan_pos:false},
+      {label:'通期予想',   actual:'下方修正',    vs_prev:'—',        vs_plan:'修正後も不透明',prev_pos:false, plan_pos:false},
     ],
-    comment:'<strong>M&A成約の成否は上場企業の意思決定プロセスに依存</strong>し、案件期間長期化で上期が計画割れ。通期予想を取り下げという異例の決断。同業の日本M&Aセンター（2127）・M&Aキャピタルパートナーズ（6080）への波及懸念が高まる。',
+    comment:'<strong>【表面】</strong> 26年12月期1Q営業利益が前年比-35.6%の大幅減益、通期ガイダンスも下方修正。<br><strong>【直接要因】</strong> 欧米の自転車ディーラー（小売店）がコロナ特需期の過剰在庫を抱えたまま発注抑制を継続。釣り具セグメントも余暇支出縮小で低迷し、部品単価への値下げ圧力も顕在化。<br><strong>【構造背景】</strong> コロナ禍（2020-22年）に欧米でアウトドアブームが到来し、ディーラーがシマノ製コンポーネントを過剰発注→在庫滞留が深刻化。その後の在庫正常化が予想を大幅に超えて長期化しており、<strong>2026年に入っても在庫消化が完結していない</strong>。サプライチェーン全体のデストックは部品メーカーへの収益影響が大きく、完全回復には2026年後半～2027年を見込む必要がある。',
   },
   {
-    code:'9613', name:'野村総合研究所', market:'prm', period:'26年3月期（通期）', result:'rev-down',
+    code:'7751', name:'キヤノン', market:'prm', period:'26年12月期（通期・1Q）', result:'rev-down',
     financials:[
-      {label:'売上高',   actual:'6,940億円', vs_prev:'+7.2%',  vs_plan:'-0.8%', prev_pos:true,  plan_pos:false},
-      {label:'経常利益', actual:'910億円',   vs_prev:'-2.1%',  vs_plan:'-5.2%', prev_pos:false, plan_pos:false},
-      {label:'純利益',   actual:'—（-84%）', vs_prev:'-84%',   vs_plan:'-84%',  prev_pos:false, plan_pos:false},
+      {label:'1Q売上高',     actual:'≈9,770億円', vs_prev:'+1.2%',   vs_plan:'ほぼ計画線',  prev_pos:true,  plan_pos:true },
+      {label:'1Q営業利益',   actual:'前年比-26.1%',vs_prev:'-26.1%',  vs_plan:'大幅割れ',   prev_pos:false, plan_pos:false},
+      {label:'1Q営業利益率', actual:'≈5.8%',       vs_prev:'-2.0pt',  vs_plan:'計画比▼',   prev_pos:false, plan_pos:false},
     ],
-    comment:'最終利益が<strong>特別損失（減損・システム除却）計上で84%の大幅マイナス修正</strong>。経常ベースでは「一転最終減益」程度だが、純利益ベースで壊滅的な修正。SIer大手でも案件採算・固定資産管理リスクが顕在化し、<strong>富士通・NTTデータへの警戒感</strong>に波及。',
+    comment:'<strong>【表面】</strong> 26年12月期1Q営業利益が前年比-26.1%減退し通期を小幅下方修正。<br><strong>【直接要因】</strong> 円高進行（2025年秋以降、1ドル＝145→140円台）で輸出採算が悪化。加えて中国市場でのミラーレスカメラ・複合機需要が低迷し、1Q営業利益率が前年比約2pt低下。<br><strong>【構造背景】</strong> 中国の不動産不況による<strong>資産効果の縮小</strong>で消費者心理が低下し、高額趣味品（カメラ）の買い控えが継続。さらに米中貿易摩擦再燃でビジネス向け複合機の調達が抑制される動き。スマートフォンカメラの高性能化による普及価格帯カメラの構造的市場縮小も長期的な課題。<strong>コニカミノルタ（4902）にも連想売り波及</strong>。',
   },
   {
-    code:'7751', name:'キヤノン', market:'prm', period:'26年12月期（通期予想）', result:'rev-down',
+    code:'3793', name:'ドリコム', market:'grt', period:'26年3月期（通期）', result:'rev-down',
     financials:[
-      {label:'売上高',     actual:'4,765億円', vs_prev:'+0%',   vs_plan:'+0%',   prev_pos:true,  plan_pos:true },
-      {label:'経常利益',   actual:'483億円',   vs_prev:'+0.2%', vs_plan:'-2.4%', prev_pos:true,  plan_pos:false},
-      {label:'1Q営業利益率',actual:'6.5%',    vs_prev:'-2.6pt',vs_plan:'計画比▼',prev_pos:false, plan_pos:false},
+      {label:'営業利益（修正前）', actual:'≈4.0億円',  vs_prev:'—',       vs_plan:'(会社計画)', prev_pos:false, plan_pos:false},
+      {label:'営業利益（修正後）', actual:'≈3.2億円',  vs_prev:'-20.0%',  vs_plan:'-20.0%',    prev_pos:false, plan_pos:false},
+      {label:'最終損益',          actual:'赤字→黒字',  vs_prev:'+改善',   vs_plan:'計画超',    prev_pos:true,  plan_pos:true},
     ],
-    comment:'1Q（1-3月期）の<strong>営業利益率が9.1%→6.5%へ急低下</strong>したことを受け通期を下方修正。中国市場のカメラ需要軟化と円高が主因。通期修正幅は小さいが1Qの実態悪化が想定外。<strong>コニカミノルタ（4902）-6.7%</strong>など競合にも連想売り波及。',
-  },
-  {
-    code:'7309', name:'シマノ', market:'prm', period:'26年12月期（通期予想）', result:'rev-down',
-    financials:[
-      {label:'売上高',   actual:'4,800億円', vs_prev:'+5.0%', vs_plan:'-2.0%', prev_pos:true,  plan_pos:false},
-      {label:'経常利益', actual:'720億円',   vs_prev:'+3.5%', vs_plan:'-5.0%', prev_pos:true,  plan_pos:false},
-      {label:'純利益',   actual:'500億円',   vs_prev:'+2.0%', vs_plan:'-5.0%', prev_pos:true,  plan_pos:false},
-    ],
-    comment:'欧米市場での<strong>スポーツ自転車（ロードバイク・MTB）の在庫調整が長引く</strong>ことで今期経常を下方修正。釣り具セグメントも軟調。ただし前年比はプラスを維持。長期保有者にとっては調整一巡後のエントリー検討材料に。',
-  },
-  {
-    code:'7931', name:'未来工業', market:'prm', period:'26年3月期（通期）', result:'miss',
-    financials:[
-      {label:'売上高',   actual:'445億円',  vs_prev:'-3.2%',  vs_plan:'-5.1%', prev_pos:false, plan_pos:false},
-      {label:'経常利益', actual:'76億円',   vs_prev:'-11.4%', vs_plan:'-12.3%',prev_pos:false, plan_pos:false},
-      {label:'純利益',   actual:'56億円',   vs_prev:'-14.5%', vs_plan:'-13.8%',prev_pos:false, plan_pos:false},
-    ],
-    comment:'<strong>住宅新設着工件数の低迷</strong>が電設資材（配線管・CD管）需要を圧迫。工場の稼働率低下も響き全指標で計画未達。今期は減配見通し（-10円）まで発表し本日<strong>-10.00%の大幅安</strong>。住宅関連サプライヤー株全般への波及が懸念される。',
+    comment:'<strong>【表面】</strong> 26年3月期の営業利益が計画比-20%の下方修正。ただし最終損益は赤字→黒字に改善（ポジティブサプライズ）。<br><strong>【直接要因】</strong> 主力スマホゲームの多言語（英語・中国語）対応やコンテンツ拡充のための開発コストが計画超過。ユーザー獲得コスト（UA費）も予算超過で営業利益を圧迫。<br><strong>【構造背景】</strong> 国内スマホゲーム市場の成熟化により、中規模ゲーム会社は<strong>海外展開なしに成長することが困難</strong>な構造的環境に置かれている。海外ローカライズコストは先行投資として発生し短期収益を圧迫するが、グローバル展開成功時の市場規模拡大余地は大きい。最終黒字転換は事業継続性の観点でポジティブ材料。',
   },
 ];
 
